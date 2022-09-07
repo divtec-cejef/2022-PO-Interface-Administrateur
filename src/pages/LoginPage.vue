@@ -14,7 +14,6 @@
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
-            Chargement...
           </template>
         </q-btn>
         <q-btn color="primary" @click="$router.push('/register')">
