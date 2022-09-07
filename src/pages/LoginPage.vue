@@ -2,12 +2,11 @@
   <div class=" container window-height">
     <div class="div-main">
       <div class="div-title">
-        <h2>Connectez-vous</h2>
+        <h2>Connexion</h2>
       </div>
       <div class="div-form">
-        <q-input outlined label="Nom" class="input-nom" />
-        <q-input outlined label="Prenom" class="input-prenom" />
-        <q-input outlined label="Mail" class="input-mail" />
+        <q-input outlined label="Nom" class="input-mail" />
+        <q-input outlined label="Mot de passe" class="input-pwd" />
       </div>
       <div class="div-button">
         <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
@@ -61,12 +60,12 @@ export default {
 <style scoped>
 h2 {
   font-size: 4rem;
-  margin:0 0 5% 0;
+  margin:0 0 10% 0;
   padding: 1%;
 }
 
 .div-main {
-  width: fit-content;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,14 +102,32 @@ button {
   width: 90%;
 }
 
-.input-prenom, .input-nom, .input-mail {
+.input-pwd, .input-mail {
   width: 100%;
-  margin-bottom: 2%;
+  margin-bottom: 4%;
 }
 
-.input-mail {
-  margin-bottom: 5%;
+.input-pwd {
+  margin-bottom: 9%;
 }
 
+/******************************************
+Responsive
+**************************************** */
+@media screen and (min-width: 600px) {
+  .div-main {
+    width: 60%;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .div-main {
+    width: 40%;
+  }
+}
+@media screen and (min-width: 1700px) {
+  .div-main {
+    width: 25%;
+  }
+}
 
 </style>
