@@ -9,7 +9,7 @@
         <q-input outlined label="Mot de passe" class="input-pwd" />
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
+        <q-btn :loading="loading" color="primary" @click="simulateProgress(), $router.push('/data')" style="width: 150px">
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -51,7 +51,7 @@ export default {
       progress,
       simulateProgress
     }
-  }
+  },
 }
 
 
