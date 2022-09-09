@@ -1,27 +1,96 @@
 <template>
   <div class="container">
-    <div class="data">
+    <div class="data pc">
       <div class="q-pa-md">
-        <q-markup-table>
-          <thead>
-          <tr>
-            <th class="text-left col-id">ID</th>
-            <th class="text-left col-first-name">Nom</th>
-            <th class="text-left col-last-name">Prenom</th>
-            <th class="text-left col-email">Email</th>
-            <th class="text-left col-stand">Stands</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="item in getManager">
-            <td class="text-left"> {{ item.id }}</td>
-            <td class="text-left"> {{ item.first_name }}</td>
-            <td class="text-left"> {{ item.last_name }}</td>
-            <td class="text-left"> {{ item.email }}</td>
-            <td class="text-left"> {{ item.stand }}</td>
-          </tr>
-          </tbody>
-        </q-markup-table>
+        <Filter />
+        <q-list bordered class="rounded-borders">
+          <q-expansion-item class="item-section-header"
+                            expand-icon="none"
+          >
+            <template v-slot:header="{ expanded }">
+              <q-item-section class="item-section-1">
+                <p>ID</p>
+              </q-item-section>
+              <q-item-section class="item-section-2">
+                <p>Prénom, Nom</p>
+              </q-item-section>
+              <q-item-section class="item-section-3">
+                <p>Adresse mail</p>
+              </q-item-section>
+              <q-item-section class="item-section-4">
+                <p>Responsable de</p>
+              </q-item-section>
+            </template>
+          </q-expansion-item>
+          <q-separator/>
+          <div v-for="item in getManager">
+            <q-expansion-item
+              group="datas"
+            >
+              <template v-slot:header="{ expanded }">
+                <q-item-section class="item-section-1">
+                  <p> {{ item.id }} </p>
+                </q-item-section>
+                <q-item-section class="item-section-2">
+                  <p> {{ item.first_name }} {{ item.last_name }} </p>
+                </q-item-section>
+                <q-item-section class="item-section-3">
+                  <p> {{ item.email }} </p>
+                </q-item-section>
+                <q-item-section class="item-section-4">
+                  <p> {{ item.stand }} </p>
+                </q-item-section>
+              </template>
+              <q-separator/>
+              <q-card>
+                <q-card-section>
+                  <AllStands/>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <q-separator/>
+          </div>
+        </q-list>
+      </div>
+    </div>
+    <div class="data phone">
+      <div class="q-pa-md">
+        <div class="div-container-filter">
+          <div class="div-filter">
+            <Filter />
+          </div>
+        </div>
+        <q-list bordered class="rounded-borders">
+          <div v-for="item in getManager">
+            <q-expansion-item
+              group="datas"
+              expand-icon="none"
+            >
+              <template v-slot:header="{ expanded }">
+                <div class="header-phone">
+                  <div>
+                    <p> {{ item.id }} </p>
+                  </div>
+                  <div>
+                    <p> {{ item.first_name }}</p>
+                    <p> {{ item.last_name }} </p>
+                  </div>
+                  <div>
+                    <p> {{ item.email }} </p>
+                    <p> {{ item.stand }} </p>
+                  </div>
+                </div>
+              </template>
+              <q-separator />
+              <q-card>
+                <q-card-section>
+                  <AllStands/>
+                </q-card-section>
+              </q-card>
+            </q-expansion-item>
+            <q-separator/>
+          </div>
+        </q-list>
       </div>
     </div>
   </div>
@@ -29,9 +98,12 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import AllStands from "components/ListOfStand";
+import Filter from "components/Filter";
 
 export default {
   name: "DatasPage",
+  components: {AllStands, Filter},
   computed: {
     ...mapGetters('mainStore', ['getManager']),
   },
@@ -39,6 +111,7 @@ export default {
 </script>
 
 <style scoped>
+
 .container {
   display: flex;
   justify-content: center;
@@ -53,23 +126,52 @@ export default {
   width: 100%;
 }
 
-.col-id {
-  width: 5%;
+.item-section-header {
+  background-color: var(--q-primary);
+  color: white;
+  opacity: 1 !important;
 }
 
-.col-first-name {
-  width: 15%;
+.item-section-1 {
+  margin-right: -35%;
 }
 
-.col-last-name {
-  width: 15%;
+.item-section-2 {
+  margin-right: -20%;
 }
 
-.col-email {
-  width: 15%;
+.item-section-3 {
+  margin-right: -20%;
 }
 
-.col-stand {
-  width: 50%;
+.phone {
+  display: none;
+}
+
+.header-phone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+/******************************************
+Responsive
+**************************************** */
+@media screen and (max-width: 900px) {
+  .phone {
+    display: block;
+  }
+
+  .pc {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .item-section-4 {
+    text-align: right;
+  }
+}
+
+@media screen and (max-width: 1700px) {
 }
 </style>
