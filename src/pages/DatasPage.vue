@@ -2,7 +2,18 @@
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
-        <Filter />
+        <div class="div-container-filter">
+          <div class="div-filter">
+            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30">
+              <template v-slot:append>
+                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
+              </template>
+              <template v-slot:hint>
+                nom ou prénom
+              </template>
+            </q-input>
+          </div>
+        </div>
         <q-list bordered class="rounded-borders">
           <q-expansion-item class="item-section-header"
                             expand-icon="none"
@@ -23,7 +34,7 @@
             </template>
           </q-expansion-item>
           <q-separator/>
-          <div v-for="item in getManager">
+          <div v-for="item in dataFilter">
             <q-expansion-item
               group="datas"
             >
@@ -57,11 +68,18 @@
       <div class="q-pa-md">
         <div class="div-container-filter">
           <div class="div-filter">
-            <Filter />
+            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30">
+              <template v-slot:append>
+                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
+              </template>
+              <template v-slot:hint>
+                nom ou prénom
+              </template>
+            </q-input>
           </div>
         </div>
         <q-list bordered class="rounded-borders">
-          <div v-for="item in getManager">
+          <div v-for="item in dataFilter">
             <q-expansion-item
               group="datas"
               expand-icon="none"
@@ -81,7 +99,7 @@
                   </div>
                 </div>
               </template>
-              <q-separator />
+              <q-separator/>
               <q-card>
                 <q-card-section>
                   <AllStands/>
@@ -99,14 +117,32 @@
 <script>
 import {mapGetters} from 'vuex'
 import AllStands from "components/ListOfStand";
-import Filter from "components/Filter";
 
 export default {
   name: "DatasPage",
-  components: {AllStands, Filter},
+  components: {AllStands},
+  data() {
+    return {
+      dataFilter: [],
+      filter: '',
+    }
+  },
   computed: {
     ...mapGetters('mainStore', ['getManager']),
   },
+  watch: {
+    filter(value) {
+      this.dataFilter = [];
+      this.getManager.forEach((item) => {
+        if (item.first_name.toLowerCase().includes(value.toLowerCase()) || item.last_name.toLowerCase().includes(value.toLowerCase())) {
+          this.dataFilter.push(item)
+        }
+      })
+    }
+  },
+  mounted() {
+    this.dataFilter = this.getManager
+  }
 }
 </script>
 
@@ -153,6 +189,27 @@ export default {
   flex-direction: column;
   align-items: flex-start;
 }
+
+/******************************
+  Filtre
+******************************/
+.div-container-filter {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.div-filter {
+  width: 30%;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.div-filter label {
+  width: 100%;
+}
+
 /******************************************
 Responsive
 **************************************** */
@@ -163,6 +220,10 @@ Responsive
 
   .pc {
     display: none;
+  }
+
+  .div-filter {
+    width: 100%;
   }
 }
 
