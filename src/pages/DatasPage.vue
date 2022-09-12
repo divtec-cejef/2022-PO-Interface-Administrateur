@@ -50,7 +50,7 @@
                   <p> {{ item.email }} </p>
                 </q-item-section>
                 <q-item-section class="item-section-4">
-                  <p> {{ item.stand }} </p>
+                  <p> {{ this.getStylesed(item.stand) }} </p>
                 </q-item-section>
               </template>
               <q-separator/>
@@ -134,7 +134,14 @@ export default {
     ...mapGetters('mainStore', ['getManager']),
   },
   methods: {
-
+    getStylesed(payload) {
+      let list = payload.toString();
+      list = list.replaceAll(',', ', ')
+      list = list.replaceAll('"', '')
+      list = list.replaceAll('[', '')
+      list = list.replaceAll(']', '')
+      return list
+    },
   },
   watch: {
     filter(value) {
