@@ -4,7 +4,7 @@
       <div class="q-pa-md">
         <div class="div-container-filter">
           <div class="div-filter">
-            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30">
+            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
               <template v-slot:append>
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
@@ -34,6 +34,7 @@
             </template>
           </q-expansion-item>
           <q-separator/>
+          <div v-if="loadFiltre">
           <div v-for="item in dataFilter">
             <q-expansion-item
               group="datas"
@@ -55,11 +56,12 @@
               <q-separator/>
               <q-card>
                 <q-card-section>
-                  <AllStands/>
+                  <AllStands :id=item.id />
                 </q-card-section>
               </q-card>
             </q-expansion-item>
             <q-separator/>
+          </div>
           </div>
         </q-list>
       </div>
@@ -102,7 +104,7 @@
               <q-separator/>
               <q-card>
                 <q-card-section>
-                  <AllStands/>
+                  <AllStands :id=item.id />
                 </q-card-section>
               </q-card>
             </q-expansion-item>
@@ -123,6 +125,7 @@ export default {
   components: {AllStands},
   data() {
     return {
+      loadFiltre: true,
       dataFilter: [],
       filter: '',
     }
@@ -130,14 +133,21 @@ export default {
   computed: {
     ...mapGetters('mainStore', ['getManager']),
   },
+  methods: {
+
+  },
   watch: {
     filter(value) {
+      this.loadFiltre = false
       this.dataFilter = [];
       this.getManager.forEach((item) => {
         if (item.first_name.toLowerCase().includes(value.toLowerCase()) || item.last_name.toLowerCase().includes(value.toLowerCase())) {
           this.dataFilter.push(item)
         }
       })
+      setTimeout(() => {
+        this.loadFiltre = true
+      }, 10)
     }
   },
   mounted() {

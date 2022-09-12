@@ -1,20 +1,55 @@
 <template>
   <div class="q-gutter-sm">
-    <q-checkbox size="sm" v-model="shape" val="1" label="Size 'sm'" />
-    <q-checkbox size="sm" v-model="shape" val="2" label="Size 'sm'" />
-    <q-checkbox size="sm" v-model="shape" val="3" label="Size 'sm'" />
+    <span v-for="stand in allStand">
+      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" @click="shapeChanged(shape)"/>
+    </span>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import {mapGetters} from "vuex";
 
 export default {
   name: "AllStands",
-  setup () {
-    return {
-      shape: ref(['line'])
+  props: {
+    id: {
+      type: Number,
+      required: true
     }
+  },
+  data() {
+    return {
+      allManager: [],
+      allStand: [],
+      shape: []
+    }
+  },
+  methods: {
+    getStandSelected() {
+      let standSelected = [];
+        this.allManager[this.id - 1].stand.forEach((item) => {
+          this.allStand.forEach((stand) => {
+            if (stand.keywords === item) {
+              standSelected.push(stand.id - 1)
+            }
+          })
+        })
+      return standSelected;
+    },
+    shapeChanged(value) {
+      this.$store.dispatch('mainStore/updateStand', {
+        "id": this.id - 1,
+        "stands": value,
+      })
+    }
+  },
+  computed: {
+    ...mapGetters('mainStore', ['getStands', "getManager"]),
+  },
+  mounted() {
+    this.allManager = this.getManager;
+    this.allStand = this.getStands
+    this.shape = this.getStandSelected();
   }
 }
 </script>
