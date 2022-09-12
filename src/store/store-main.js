@@ -418,7 +418,9 @@ const getters = {
   getStands: () => {
     return listOfStands;
   },
-
+  getListOfSections: () => {
+    return listOfSections;
+  }
 }
 
 export default {

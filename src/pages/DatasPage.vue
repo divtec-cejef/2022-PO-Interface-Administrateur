@@ -249,7 +249,4 @@ Responsive
     text-align: right;
   }
 }
-
-@media screen and (max-width: 1700px) {
-}
 </style>

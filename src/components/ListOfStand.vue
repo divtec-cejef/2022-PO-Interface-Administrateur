@@ -1,7 +1,7 @@
 <template>
-  <div class="q-gutter-sm">
-    <span v-for="stand in allStand">
-      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" @click="shapeChanged(shape)"/>
+  <div class="q-gutter-sm div-checkbox-container">
+    <span class="element" v-for="stand in allStand">
+      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" @click="shapeChanged(shape)" :class=this.getClass(stand.section) />
     </span>
   </div>
 </template>
@@ -41,10 +41,28 @@ export default {
         "id": this.id - 1,
         "stands": value,
       })
+    },
+    getClass(section) {
+      switch (section) {
+        case this.getListOfSections[0]:
+          return "inf";
+        case this.getListOfSections[1]:
+          return "hor";
+        case this.getListOfSections[2]:
+          return "lac";
+        case this.getListOfSections[3]:
+          return "mmc";
+        case this.getListOfSections[4]:
+          return "dcm";
+        case this.getListOfSections[5]:
+          return "elt";
+        case this.getListOfSections[6]:
+          return "aut";
+      }
     }
   },
   computed: {
-    ...mapGetters('mainStore', ['getStands', "getManager"]),
+    ...mapGetters('mainStore', ['getStands', "getManager", "getListOfSections"]),
   },
   mounted() {
     this.allManager = this.getManager;
@@ -55,5 +73,60 @@ export default {
 </script>
 
 <style scoped>
+.div-checkbox-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: 350px;
+}
+.element {
+  width: fit-content;
+}
 
+/*****************************************
+Style des différente section
+****************************************/
+.inf {
+  text-decoration: underline;
+  text-decoration-color: #7d6aa4;
+}
+.hor {
+  text-decoration: underline;
+  text-decoration-color: #f8b02a;
+}
+.lac {
+  text-decoration: underline;
+  text-decoration-color: #8fc9ba;
+}
+.mmc {
+  text-decoration: underline;
+  text-decoration-color: #028fc5;
+}
+.dcm {
+  text-decoration: underline;
+  text-decoration-color: #3fa83f;
+}
+.elt {
+  text-decoration: underline;
+  text-decoration-color: #e83f78;
+}
+.aut {
+  text-decoration: underline;
+  text-decoration-color: #5c2976;
+}
+
+/******************************************
+Responsive
+******************************************/
+@media screen and (min-width: 900px) {
+  .div-checkbox-container {
+    height: 150px;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .div-checkbox-container {
+    height: 100px;
+  }
+}
 </style>
