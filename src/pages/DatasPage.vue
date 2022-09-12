@@ -9,7 +9,7 @@
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
               <template v-slot:hint>
-                nom ou prénom
+                Nom ou prénom
               </template>
             </q-input>
           </div>
@@ -23,7 +23,7 @@
                 <p>ID</p>
               </q-item-section>
               <q-item-section class="item-section-2">
-                <p>Prénom, Nom</p>
+                <p>Prénom et Nom</p>
               </q-item-section>
               <q-item-section class="item-section-3">
                 <p>Adresse mail</p>
@@ -163,7 +163,7 @@ export default {
 }
 
 .item-section-header {
-  background-color: var(--q-primary);
+  background-color: #DC006B;
   color: white;
   opacity: 1 !important;
 }

@@ -5,17 +5,22 @@
         <h2>Connexion</h2>
       </div>
       <div class="div-form">
-        <q-input outlined label="Nom" class="input-mail" />
-        <q-input outlined label="Mot de passe" class="input-pwd" />
+        <q-input outlined color="pink-14" label="Mail" class="input-mail"/>
+        <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd" :type="isPwd ? 'password' : 'text'">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
+          </template>
+        </q-input>
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" color="primary" @click="simulateProgress(), $router.push('/data')" style="width: 150px">
+        <q-btn :loading="loading" class="bt-login" @click="simulateProgress(), $router.push('/data')"
+               style="width: 150px">
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
           </template>
         </q-btn>
-        <q-btn color="primary" @click="$router.push('/register')">
+        <q-btn @click="$router.push('/register')">
           Crée un compte
         </q-btn>
       </div>
@@ -47,6 +52,8 @@ export default {
     }
 
     return {
+      password: ref(''),
+      isPwd: ref(true),
       loading,
       progress,
       simulateProgress
@@ -60,7 +67,7 @@ export default {
 <style scoped>
 h2 {
   font-size: 4rem;
-  margin:0 0 10% 0;
+  margin: 0 0 10% 0;
   padding: 1%;
 }
 
@@ -92,6 +99,8 @@ h2 {
 
 button {
   font-size: 1.17em;
+  background-color: #DC006B;
+  color: white;
 }
 
 .div-form {
@@ -119,11 +128,13 @@ Responsive
     width: 60%;
   }
 }
+
 @media screen and (min-width: 1000px) {
   .div-main {
     width: 40%;
   }
 }
+
 @media screen and (min-width: 1700px) {
   .div-main {
     width: 25%;

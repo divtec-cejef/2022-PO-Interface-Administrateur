@@ -5,18 +5,18 @@
         <h2>Inscription</h2>
       </div>
       <div class="div-form">
-        <q-input outlined label="Nom" class="input-lastname" />
-        <q-input outlined label="Prenom" class="input-firstname" />
-        <q-input outlined label="Mail" class="input-mail" />
+        <q-input outlined color="pink-14" label="Nom" class="input-lastname" />
+        <q-input outlined color="pink-14" label="Prenom" class="input-firstname" />
+        <q-input outlined color="pink-14" label="Mail" class="input-mail" />
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
+        <q-btn :loading="loading" @click="simulateProgress()" style="width: 150px">
           S'inscrire
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
           </template>
         </q-btn>
-        <q-btn color="primary" @click="$router.push('/')">
+        <q-btn @click="$router.push('/')">
           Retour
         </q-btn>
       </div>
@@ -93,6 +93,8 @@ h2 {
 
 button {
   font-size: 1.17em;
+  background-color: #DC006B;
+  color: white;
 }
 
 .div-form {

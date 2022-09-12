@@ -9,3 +9,9 @@ export default defineComponent({
   name: 'App'
 })
 </script>
+
+<style>
+:root {
+  --color-divtec: #DC006B;
+}
+</style>
