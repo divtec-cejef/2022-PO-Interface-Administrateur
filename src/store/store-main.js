@@ -1,3 +1,7 @@
+import { Notify } from 'quasar'
+import axios from 'axios';
+axios.defaults.baseURL = 'https://api-mailenz.divtec.me/api'
+
 const listOfSections = ['INF', 'HOR', 'LAC', 'MMC', 'DCM', 'ELT', 'AUT'];
 const listOfStands = [
   {
@@ -98,317 +102,85 @@ const listOfStands = [
   }
 ];
 const state = {
-  listOfManager: [
-    {
-      "id": 1,
-      "first_name": "Merle",
-      "last_name": "Malone",
-      "email": "merlemalone@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 2,
-      "first_name": "Huff",
-      "last_name": "Kennedy",
-      "email": "huffkennedy@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 3,
-      "first_name": "Kathleen",
-      "last_name": "Christian",
-      "email": "kathleenchristian@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 4,
-      "first_name": "Elizabeth",
-      "last_name": "Massey",
-      "email": "elizabethmassey@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 5,
-      "first_name": "Ellis",
-      "last_name": "Oneal",
-      "email": "ellisoneal@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 6,
-      "first_name": "Ashlee",
-      "last_name": "Downs",
-      "email": "ashleedowns@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 7,
-      "first_name": "Monique",
-      "last_name": "King",
-      "email": "moniqueking@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 8,
-      "first_name": "Johnnie",
-      "last_name": "Rich",
-      "email": "johnnierich@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 9,
-      "first_name": "Dixon",
-      "last_name": "Osborn",
-      "email": "dixonosborn@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 10,
-      "first_name": "Acevedo",
-      "last_name": "House",
-      "email": "acevedohouse@digique.com",
-      "stand": [
-        "CSS",
-        "Pont"
-      ]
-    },
-    {
-      "id": 11,
-      "first_name": "Ruby",
-      "last_name": "Mathews",
-      "email": "rubymathews@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 12,
-      "first_name": "Jones",
-      "last_name": "Rhodes",
-      "email": "jonesrhodes@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 13,
-      "first_name": "Kim",
-      "last_name": "Roman",
-      "email": "kimroman@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 14,
-      "first_name": "Autumn",
-      "last_name": "Hood",
-      "email": "autumnhood@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 15,
-      "first_name": "Bonner",
-      "last_name": "Hyde",
-      "email": "bonnerhyde@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 16,
-      "first_name": "Lester",
-      "last_name": "Mcfadden",
-      "email": "lestermcfadden@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 17,
-      "first_name": "Ashley",
-      "last_name": "Beard",
-      "email": "ashleybeard@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 18,
-      "first_name": "Tameka",
-      "last_name": "Yang",
-      "email": "tamekayang@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 19,
-      "first_name": "Elise",
-      "last_name": "Hines",
-      "email": "elisehines@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 20,
-      "first_name": "Annie",
-      "last_name": "Villarreal",
-      "email": "annievillarreal@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 21,
-      "first_name": "Reynolds",
-      "last_name": "Kline",
-      "email": "reynoldskline@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 22,
-      "first_name": "Alisa",
-      "last_name": "Bray",
-      "email": "alisabray@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 23,
-      "first_name": "Robyn",
-      "last_name": "Boyle",
-      "email": "robynboyle@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 24,
-      "first_name": "Agnes",
-      "last_name": "Michael",
-      "email": "agnesmichael@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 25,
-      "first_name": "Eliza",
-      "last_name": "Cantu",
-      "email": "elizacantu@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 26,
-      "first_name": "Ursula",
-      "last_name": "Price",
-      "email": "ursulaprice@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 27,
-      "first_name": "Yvonne",
-      "last_name": "Bowers",
-      "email": "yvonnebowers@digique.com",
-      "stand": [
-        "CSS",
-        "Programmation"
-      ]
-    },
-    {
-      "id": 28,
-      "first_name": "Whitney",
-      "last_name": "Powell",
-      "email": "whitneypowell@digique.com",
-      "stand": [
-        "HTML",
-        "Pont"
-      ]
-    },
-    {
-      "id": 29,
-      "first_name": "Theresa",
-      "last_name": "Carson",
-      "email": "theresacarson@digique.com",
-      "stand": [
-        "HTML",
-        "Programmation"
-      ]
-    }
-  ]
+  isAdmin: false,
+  isConnected: false,
+  listOfManager: []
 }
+
 const mutations = {
   changeStand(state, payload) {
-    state.listOfManager[payload.index].stand = [];
+    state.listOfManager[payload.index].responsable = [];
     payload.newStands.forEach(stand => {
-      state.listOfManager[payload.index].stand.push(stand);
+      state.listOfManager[payload.index].responsable.push(stand);
     })
+  },
+  setConnected(state, payload) {
+    state.isConnected = payload;
+  },
+  setIsAdmin(state, payload) {
+    state.isAdmin = true;
+    // state.isAdmin = payload['user'].is_admin === 1;
+  },
+  setListOfManager(state, payload) {
+    state.listOfManager = payload;
   }
 }
 const actions = {
+  getListOfManager({ commit }) {
+    return axios.get('/users')
+      .then(response => {
+        console.log(response.data);
+        commit('setListOfManager', response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  },
   updateStand({ commit }, payload) {
     let newStand = []
 
     payload.stands.forEach((element) => {
-      newStand.push(listOfStands[element].keywords);
+      newStand.push(element);
     });
 
     commit('changeStand', { index: payload.id, newStands: newStand });
-  }
+  },
+  // connecte un responsable
+  login({commit}, credentials) {
+
+    //emmet une requête axios en passant l'email et le mot de passe
+    return axios
+      .post("/login", {
+        email: credentials.email,
+        password: credentials.password
+      })
+      //une fois la requete
+      .then(response => {
+        commit('setConnected', true)
+        commit('setIsAdmin', response.data)
+        this.$router.push('/data')
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Bienvenue ' + response.data.user.first_name,
+          progress: true
+        })
+      })
+      .catch(err => {
+        if (err.response.status === 401) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Email ou mot de passe incorrect',
+            progress: true
+          })
+        }
+      })
+  },
 }
 const getters = {
   getManager: (state) => {

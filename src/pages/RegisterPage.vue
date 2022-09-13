@@ -7,6 +7,7 @@
       <div class="div-form">
         <q-input outlined color="pink-14" label="Nom" class="input-lastname" />
         <q-input outlined color="pink-14" label="Prenom" class="input-firstname" />
+        <q-input outlined color="pink-14" label="Nom d'utilisateur" class="input-username" />
         <q-input outlined color="pink-14" label="Mail" class="input-mail" />
       </div>
       <div class="div-button">
@@ -105,7 +106,7 @@ button {
   width: 90%;
 }
 
-.input-lastname,.input-firstname, .input-mail {
+.input-lastname,.input-firstname, .input-mail, .input-username {
   width: 100%;
   margin-bottom: 4%;
 }

@@ -5,7 +5,7 @@
         <h2>Connexion</h2>
       </div>
       <div class="div-form">
-        <q-input outlined color="pink-14" label="Mail" class="input-mail"/>
+        <q-input outlined v-model="email" color="pink-14" label="Mail" class="input-mail"/>
         <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd" :type="isPwd ? 'password' : 'text'">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
@@ -13,8 +13,7 @@
         </q-input>
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" class="bt-login" @click="simulateProgress(), $router.push('/data')"
-               style="width: 150px">
+        <q-btn :loading="loading" class="bt-login" @click="simulateProgress(); this.connectUser()" style="width: 150px">
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -48,10 +47,11 @@ export default {
       setTimeout(() => {
         // we're done, we reset loading state
         loading.value = false
-      }, 3000)
+      }, 500)
     }
 
     return {
+      email: ref(''),
       password: ref(''),
       isPwd: ref(true),
       loading,
@@ -59,6 +59,14 @@ export default {
       simulateProgress
     }
   },
+  methods: {
+    connectUser() {
+      this.$store.dispatch('mainStore/login', {
+        email: this.email,
+        password: this.password
+      })
+    }
+  }
 }
 
 

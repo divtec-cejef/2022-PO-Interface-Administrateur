@@ -92,7 +92,8 @@ module.exports = configure(function (ctx) {
       config: {
         brand: {
           colorDivtec: '#DC006B',
-        }
+        },
+        notify: { /* look at QuasarConfOptions from the API card */ }
       },
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -106,7 +107,9 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify'
+      ]
     },
 
     // animations: 'all', // --- includes all animations

@@ -1,7 +1,7 @@
 <template>
   <div class="q-gutter-sm div-checkbox-container">
     <span class="element" v-for="stand in allStand">
-      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" @click="shapeChanged(shape)" :class=this.getClass(stand.section) />
+      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" :title=stand.name @click="shapeChanged(shape)" />
     </span>
   </div>
 </template>
@@ -27,9 +27,9 @@ export default {
   methods: {
     getStandSelected() {
       let standSelected = [];
-        this.allManager[this.id - 1].stand.forEach((item) => {
+        this.allManager[this.id - 1].responsable.forEach((item) => {
           this.allStand.forEach((stand) => {
-            if (stand.keywords === item) {
+            if (stand.id - 1 === item) {
               standSelected.push(stand.id - 1)
             }
           })
@@ -65,6 +65,7 @@ export default {
     ...mapGetters('mainStore', ['getStands', "getManager", "getListOfSections"]),
   },
   mounted() {
+    console.log('sayer')
     this.allManager = this.getManager;
     this.allStand = this.getStands
     this.shape = this.getStandSelected();

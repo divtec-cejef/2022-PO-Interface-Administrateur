@@ -1,4 +1,6 @@
 <template>
+    <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
+    <q-btn fab icon="add" color="pink-14" class="btn-add" v-if="isAdmin"/>
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
@@ -14,7 +16,7 @@
             </q-input>
           </div>
         </div>
-        <q-list bordered class="rounded-borders">
+        <q-list bordered class="rounded-borders q-list">
           <q-expansion-item class="item-section-header"
                             expand-icon="none"
           >
@@ -38,6 +40,7 @@
           <div v-for="item in dataFilter">
             <q-expansion-item
               group="datas"
+              :expand-icon=this.getIcon()
             >
               <template v-slot:header="{ expanded }">
                 <q-item-section class="item-section-1">
@@ -50,12 +53,12 @@
                   <p> {{ item.email }} </p>
                 </q-item-section>
                 <q-item-section class="item-section-4">
-                  <p> {{ this.getStylesed(item.stand) }} </p>
+                  <p> {{ this.getStylesed( item.responsable) }} </p>
                 </q-item-section>
               </template>
               <q-separator/>
               <q-card>
-                <q-card-section>
+                <q-card-section v-if="isAdmin">
                   <AllStands :id=item.id />
                 </q-card-section>
               </q-card>
@@ -89,9 +92,6 @@
               <template v-slot:header="{ expanded }">
                 <div class="header-phone">
                   <div>
-                    <p> {{ item.id }} </p>
-                  </div>
-                  <div>
                     <p> {{ item.first_name }}</p>
                     <p> {{ item.last_name }} </p>
                   </div>
@@ -103,12 +103,12 @@
               </template>
               <q-separator/>
               <q-card>
-                <q-card-section>
+                <q-card-section v-if="isAdmin">
                   <AllStands :id=item.id />
                 </q-card-section>
               </q-card>
             </q-expansion-item>
-            <q-separator/>
+            <q-separator class="q-separator"/>
           </div>
         </q-list>
       </div>
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState } from 'vuex'
 import AllStands from "components/ListOfStand";
 
 export default {
@@ -131,16 +131,86 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('mainStore', ['getManager']),
+    ...mapState('mainStore', ['isConnected', 'isAdmin']),
+    ...mapGetters('mainStore', ['getManager', 'getStands']),
   },
   methods: {
+    logout() {
+      window.location.reload();
+    },
     getStylesed(payload) {
-      let list = payload.toString();
-      list = list.replaceAll(',', ', ')
-      list = list.replaceAll('"', '')
-      list = list.replaceAll('[', '')
-      list = list.replaceAll(']', '')
+      let list = '';
+      if (payload !== undefined) {
+        list = payload.toString();
+        let stand = this.getStands;
+
+        payload.forEach((items) => {
+          switch (items) {
+            case 0:
+              list = list.replace(0, stand[0].keywords);
+              break;
+            case 1:
+              list = list.replace(1, stand[1].keywords);
+              break;
+            case 2:
+              list = list.replace(2, stand[2].keywords);
+              break;
+            case 3:
+              list = list.replace(3, stand[3].keywords);
+              break;
+            case 4:
+              list = list.replace(4, stand[4].keywords);
+              break;
+            case 5:
+              list = list.replace(5, stand[5].keywords);
+              break;
+            case 6:
+              list = list.replace(6, stand[6].keywords);
+              break;
+            case 7:
+              list = list.replace(7, stand[7].keywords);
+              break;
+            case 8:
+              list = list.replace(8, stand[8].keywords);
+              break;
+            case 9:
+              list = list.replace(9, stand[9].keywords);
+              break;
+            case 10:
+              list = list.replace(10, stand[10].keywords);
+              break;
+            case 11:
+              list = list.replace(11, stand[11].keywords);
+              break;
+            case 12:
+              list = list.replace(12, stand[12].keywords);
+              break;
+            case 13:
+              list = list.replace(13, stand[13].keywords);
+              break;
+            case 14:
+              list = list.replace(14, stand[14].keywords);
+              break;
+            case 15:
+              list = list.replace(15, stand[15].keywords);
+              break;
+            case 16:
+              list = list.replace(16, stand[16].keywords);
+              break;
+          }
+        })
+
+
+        list = list.replaceAll(',', ', ')
+        list = list.replaceAll('"', '')
+        list = list.replaceAll('[', '')
+        list = list.replaceAll(']', '')
+
+      }
       return list
+    },
+    getIcon() {
+      return this.isAdmin ? 'keyboard_arrow_down' : 'none'
     },
   },
   watch: {
@@ -158,6 +228,9 @@ export default {
     }
   },
   mounted() {
+    if (!this.isConnected) {
+      this.$router.push('/')
+    }
     this.dataFilter = this.getManager
   }
 }
@@ -177,6 +250,10 @@ export default {
 
 .q-pa-md {
   width: 100%;
+}
+
+.q-list {
+  border: 1px solid #DC006B;
 }
 
 .item-section-header {
@@ -201,10 +278,33 @@ export default {
   display: none;
 }
 
+.phone .q-separator {
+  border: 1px solid rgba(0, 0, 0, 0.78);
+  height: 0px;
+}
+
+
 .header-phone {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.btn-add {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+}
+
+.btn-disconnect {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  padding: 0 !important;
+  min-height: 0 !important;
+  min-width:0 !important;
+  height: 40px;
+  width: 40px;
 }
 
 /******************************
@@ -241,6 +341,13 @@ Responsive
 
   .div-filter {
     width: 100%;
+  }
+  .btn-add {
+    height: 50px;
+    width: 50px;
+    padding: 0 !important;
+    min-height: 0 !important;
+    min-width:0 !important;
   }
 }
 
