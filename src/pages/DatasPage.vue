@@ -97,7 +97,7 @@
                   </div>
                   <div>
                     <p> {{ item.email }} </p>
-                    <p> {{ item.stand }} </p>
+                    <p> {{ this.getStylesed(item.stand) }} </p>
                   </div>
                 </div>
               </template>
