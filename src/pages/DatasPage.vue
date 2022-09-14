@@ -97,7 +97,7 @@
                   </div>
                   <div>
                     <p> {{ item.email }} </p>
-                    <p> {{ this.getStylesed(item.stand) }} </p>
+                    <p> {{ this.getStylesed( item.responsable) }} </p>
                   </div>
                 </div>
               </template>
@@ -129,6 +129,7 @@ export default {
       loadFiltre: true,
       dataFilter: [],
       filter: '',
+      allUsers: [],
     }
   },
   computed: {
@@ -250,11 +251,11 @@ export default {
   watch: {
     filter(value) {
       if (value === '') {
-        this.dataFilter = this.getManager;
+        this.dataFilter = this.allUsers;
       } else {
       this.loadFiltre = false
       this.dataFilter = [];
-      this.getManager.forEach((item) => {
+      this.allUsers.forEach((item) => {
         if (item.first_name.toLowerCase().includes(value.toLowerCase()) || item.last_name.toLowerCase().includes(value.toLowerCase())) {
           this.dataFilter.push(item)
         }
@@ -270,6 +271,7 @@ export default {
       this.$router.push('/')
     }
     this.dataFilter = this.getManager
+    this.allUsers = this.getManager
   }
 }
 </script>
