@@ -1,6 +1,6 @@
 <template>
     <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
-    <q-btn fab icon="add" color="pink-14" class="btn-add" v-if="isAdmin"/>
+    <q-btn fab icon="add" color="pink-14" class="btn-add" v-if="isAdmin" @click="updateResponsable"/>
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
@@ -119,6 +119,7 @@
 <script>
 import {mapGetters, mapState } from 'vuex'
 import AllStands from "components/ListOfStand";
+import {Notify} from 'quasar'
 
 export default {
   name: "DatasPage",
@@ -135,16 +136,49 @@ export default {
     ...mapGetters('mainStore', ['getManager', 'getStands']),
   },
   methods: {
+    updateResponsable() {
+      this.$store.dispatch('mainStore/updateResponsable')
+      Notify.create({
+          type: 'positive',
+        color: 'positive',
+        timeout: 1000,
+        position: 'top-right',
+        message: 'Base de données mise à jour',
+        progress: true
+      })
+    },
     logout() {
       window.location.reload();
     },
     getStylesed(payload) {
       let list = '';
+
       if (payload !== undefined) {
-        list = payload.toString();
+        let reforgedPayload = [];
+        payload.forEach(item => {
+          reforgedPayload.push(item.nom);
+        })
+
+        // met a jour la liste pour a la place d'afficher tous les fom affiche seulement CSS
+        let reReforgedPayload = [];
+        reforgedPayload.forEach((item) => {
+          if (item.includes('fom')) {
+            if (!reReforgedPayload.includes('CSS')) {
+              reReforgedPayload.push('CSS');
+            }
+          } else if (item.includes('cryptage1') || item.includes('cryptage2') || item.includes('cryptage3')) {
+              if (!reReforgedPayload.includes('Cryptage')) {
+                reReforgedPayload.push('Cryptage');
+              }
+          } else {
+            reReforgedPayload.push(item);
+          }
+        })
+
+        list = reReforgedPayload.toString();
         let stand = this.getStands;
 
-        payload.forEach((items) => {
+        reReforgedPayload.forEach((items) => {
           switch (items) {
             case 0:
               list = list.replace(0, stand[0].keywords);
@@ -215,6 +249,9 @@ export default {
   },
   watch: {
     filter(value) {
+      if (value === '') {
+        this.dataFilter = this.getManager;
+      } else {
       this.loadFiltre = false
       this.dataFilter = [];
       this.getManager.forEach((item) => {
@@ -222,6 +259,7 @@ export default {
           this.dataFilter.push(item)
         }
       })
+      }
       setTimeout(() => {
         this.loadFiltre = true
       }, 10)

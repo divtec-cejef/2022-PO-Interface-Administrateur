@@ -9,6 +9,7 @@ export default defineComponent({
   name: 'App',
   mounted() {
     this.$store.dispatch('mainStore/getListOfManager')
+    this.$store.dispatch('mainStore/getListOfBadge')
   }
 })
 </script>

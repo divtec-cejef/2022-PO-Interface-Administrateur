@@ -1,7 +1,8 @@
 <template>
   <div class="q-gutter-sm div-checkbox-container">
     <span class="element" v-for="stand in allStand">
-      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" :title=stand.name @click="shapeChanged(shape)" />
+      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" :title=stand.name
+                  @click="shapeChanged(shape)"/>
     </span>
   </div>
 </template>
@@ -27,13 +28,17 @@ export default {
   methods: {
     getStandSelected() {
       let standSelected = [];
-        this.allManager[this.id - 1].responsable.forEach((item) => {
-          this.allStand.forEach((stand) => {
-            if (stand.id - 1 === item) {
-              standSelected.push(stand.id - 1)
-            }
-          })
-        })
+      this.allManager[this.id - 1].responsable.forEach(badge => {
+        if (badge.id === 1 || badge.id === 2 || badge.id === 3 || badge.id === 4 || badge.id === 5 || badge.id === 6) {
+          standSelected.push(0);
+        } else if (badge.id <= 9) {
+          standSelected.push(badge.id - 6);
+        } else if (badge.id === 10 || badge.id === 11 || badge.id === 12) {
+          standSelected.push(4);
+        } else {
+          standSelected.push(badge.id - 8);
+        }
+      });
       return standSelected;
     },
     shapeChanged(value) {
@@ -41,31 +46,12 @@ export default {
         "id": this.id - 1,
         "stands": value,
       })
-    },
-    getClass(section) {
-      switch (section) {
-        case this.getListOfSections[0]:
-          return "inf";
-        case this.getListOfSections[1]:
-          return "hor";
-        case this.getListOfSections[2]:
-          return "lac";
-        case this.getListOfSections[3]:
-          return "mmc";
-        case this.getListOfSections[4]:
-          return "dcm";
-        case this.getListOfSections[5]:
-          return "elt";
-        case this.getListOfSections[6]:
-          return "aut";
-      }
     }
   },
   computed: {
     ...mapGetters('mainStore', ['getStands', "getManager", "getListOfSections"]),
   },
   mounted() {
-    console.log('sayer')
     this.allManager = this.getManager;
     this.allStand = this.getStands
     this.shape = this.getStandSelected();
@@ -80,6 +66,7 @@ export default {
   flex-wrap: wrap;
   height: 350px;
 }
+
 .element {
   width: fit-content;
 }
@@ -91,26 +78,32 @@ Style des différente section
   text-decoration: underline;
   text-decoration-color: #7d6aa4;
 }
+
 .hor {
   text-decoration: underline;
   text-decoration-color: #f8b02a;
 }
+
 .lac {
   text-decoration: underline;
   text-decoration-color: #8fc9ba;
 }
+
 .mmc {
   text-decoration: underline;
   text-decoration-color: #028fc5;
 }
+
 .dcm {
   text-decoration: underline;
   text-decoration-color: #3fa83f;
 }
+
 .elt {
   text-decoration: underline;
   text-decoration-color: #e83f78;
 }
+
 .aut {
   text-decoration: underline;
   text-decoration-color: #5c2976;
