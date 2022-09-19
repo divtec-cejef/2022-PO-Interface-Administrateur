@@ -57,12 +57,23 @@ export default {
     }
   },
   methods: {
+    /**
+     * Connect l'utilisateur
+     */
     connectUser() {
       this.$store.dispatch('mainStore/login', {
         email: this.email,
         password: this.password
       })
     }
+  },
+  beforeMount() {
+    window.addEventListener("keydown", event => {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        this.connectUser()
+      }
+    });
   }
 }
 

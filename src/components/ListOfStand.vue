@@ -26,6 +26,10 @@ export default {
     }
   },
   methods: {
+    /**
+     * Get all stands
+     * @returns {*[]} liste de tous les stands
+     */
     getStandSelected() {
       let standSelected = [];
       this.allManager[this.id - 1].responsable.forEach(badge => {
@@ -33,14 +37,20 @@ export default {
           standSelected.push(0);
         } else if (badge.id <= 9) {
           standSelected.push(badge.id - 6);
-        } else if (badge.id === 10 || badge.id === 11 || badge.id === 12) {
+        } else if (badge.id === 9 || badge.id === 10 || badge.id === 11) {
+          standSelected.push(3);
+        } else if (badge.id === 12 || badge.id === 13 || badge.id === 14) {
           standSelected.push(4);
         } else {
-          standSelected.push(badge.id - 8);
+          standSelected.push(badge.id - 10);
         }
       });
       return standSelected;
     },
+    /**
+     * modifie les stands sélectionnés
+     * @param value la valeur des stands selectionner
+     */
     shapeChanged(value) {
       this.$store.dispatch('mainStore/updateStand', {
         "id": this.id - 1,

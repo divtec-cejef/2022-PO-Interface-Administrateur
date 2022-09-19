@@ -16,7 +16,7 @@
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
               <template v-slot:hint>
-                Nom / Prénom / Filtre
+                Nom / Prénom / Stands
               </template>
             </q-input>
           </div>
@@ -78,12 +78,12 @@
       <div class="q-pa-md">
         <div class="div-container-filter">
           <div class="div-filter">
-            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30">
+            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
               <template v-slot:append>
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
               <template v-slot:hint>
-                Nom / Prénom / Filtre
+                Nom / Prénom / Stands
               </template>
             </q-input>
           </div>
@@ -142,6 +142,9 @@ export default {
     ...mapGetters('mainStore', ['getManager', 'getStands']),
   },
   methods: {
+    /**
+     * met a jour les responsable
+     */
     updateResponsable() {
       this.$store.dispatch('mainStore/updateResponsable')
       Notify.create({
@@ -153,9 +156,17 @@ export default {
         progress: true
       })
     },
+    /**
+     * déconnect l'utilisateur
+     */
     logout() {
       window.location.reload();
     },
+    /**
+     * r'envoie une amélioration visuelle des stands
+     * @param payload les stands selectionner
+     * @returns {string} string de tous les stands
+     */
     getStylesed(payload) {
       let list = '';
 
@@ -171,6 +182,10 @@ export default {
           if (item.includes('fom')) {
             if (!reReforgedPayload.includes('CSS')) {
               reReforgedPayload.push('CSS');
+            }
+          } else if (item.includes('robotique lvl1') || item.includes('robotique lvl2') || item.includes('robotique lvl3')) {
+            if (!reReforgedPayload.includes('Robotique')) {
+              reReforgedPayload.push('Robotique');
             }
           } else if (item.includes('cryptage lvl1') || item.includes('cryptage lvl2') || item.includes('cryptage lvl3')) {
               if (!reReforgedPayload.includes('Cryptage')) {
@@ -240,20 +255,26 @@ export default {
           }
         })
 
-
+        // remplace les element non voulu dans le strings
         list = list.replaceAll(',', ', ')
         list = list.replaceAll('"', '')
         list = list.replaceAll('[', '')
         list = list.replaceAll(']', '')
-
       }
       return list
     },
+    /**
+     * change l'icon en function de l'etat de la connexion
+     */
     getIcon() {
       return this.isAdmin ? 'keyboard_arrow_down' : 'none'
     },
   },
   watch: {
+    /**
+     * met a jour les données en fonction de la recherche
+     * @param value la valeur de la recherche
+     */
     filter(value) {
       if (value === '') {
         this.dataFilter = this.allUsers;
@@ -277,12 +298,14 @@ export default {
     }
   },
   mounted() {
+    // re dirige les utilisateur non connecter
     if (!this.isConnected) {
       this.$router.push('/')
     }
     this.dataFilter = this.getManager
     this.allUsers = this.getManager
 
+    // protection de données non sauvegarder
     window.onbeforeunload = function(){
       return "Do you want to leave?"
     }
@@ -374,6 +397,7 @@ export default {
   min-height: 0 !important;
   min-width:0 !important;
   transition: 0.5s;
+  z-index: 1;
 }
 
 .btn-register {
@@ -423,13 +447,6 @@ Responsive
 
   .div-filter {
     width: 100%;
-  }
-  .btn-add {
-    height: 50px;
-    width: 50px;
-    padding: 0 !important;
-    min-height: 0 !important;
-    min-width:0 !important;
   }
 }
 

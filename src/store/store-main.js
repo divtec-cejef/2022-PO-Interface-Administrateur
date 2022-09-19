@@ -104,32 +104,72 @@ const state = {
 }
 
 const mutations = {
+  /**
+   * Modifi les stands
+   * @param state les variable du store
+   * @param payload les stands
+   */
   changeStand(state, payload) {
     state.listOfManager[payload.index].responsable = [];
     payload.newStands.forEach(stand => {
       state.listOfManager[payload.index].responsable.push(stand);
     })
   },
+  /**
+   * met a jour les données de la personne connecter
+   * @param state les variable du store
+   * @param payload les données de la personne connecter
+   */
   setConnected(state, payload) {
     state.isConnected = payload;
   },
+  /**
+   * met a jour si l'utilisateur est admin
+   * @param state les variable du store
+   * @param payload si l'utilisateur est admin
+   */
   setIsAdmin(state, payload) {
     state.isAdmin = payload['user'].is_admin === 1;
   },
+  /**
+   * met a jour la liste des stands
+   * @param state les variable du store
+   * @param payload la liste des stands
+   */
   setListOfManager(state, payload) {
     state.listOfManager = payload;
   },
+  /**
+   * met a jour la liste des manager de l'API
+   * @param state les variable du store
+   * @param payload la liste des manager de l'API
+   */
   setListOfManagerinAPI(state, payload) {
     state.listOfManagerInAPI = payload;
   },
+  /**
+   * met a jour la liste des badges
+   * @param state les variable du store
+   * @param payload la liste des badges
+   */
   setListOfBadge(state, payload) {
     state.listOfBadge = payload;
   },
+  /**
+   * met a jour l'utilisateur connecter
+   * @param state les variable du store
+   * @param payload l'utilisateur connecter
+   */
   setWhoIsConnected(state, payload) {
     state.connected = payload;
   }
 }
 const actions = {
+  /**
+   * test si il y a des différence avec l'api
+   * @param commit permet de faire des mutations
+   * @returns {boolean} si il y a des différence
+   */
   testDifferenceWithAPI({commit}) {
     let manager = state.listOfManager
     let managerAPI = state.listOfManagerInAPI
@@ -141,7 +181,14 @@ const actions = {
     })
     return false
   },
-  register({commit}, payload) {
+  /**
+   * Crée un utilsiateur
+   * @param dispatch permet de faire des actions
+   * @param commit permet de faire des mutations
+   * @param payload les données de l'utilisateur
+   * @returns {Promise<T>} les données de l'utilisateur
+   */
+  register({dispatch, commit}, payload) {
     let config = {
       "headers": {
         "Authorization": "Bearer " + state.connected.access_token,
@@ -168,6 +215,8 @@ const actions = {
           message: 'Inscription réussie !',
           progress: true
         })
+        dispatch('getListOfManager')
+        dispatch('getListOfManagerInAPI')
       })
       .catch(error => {
         console.log(error)
@@ -181,6 +230,10 @@ const actions = {
         })
       })
   },
+  /**
+   * Met a jour les responsable
+   * @param state les variable du store
+   */
   updateResponsable({state}) {
     let manager = state.listOfManager;
     let managerAPI = state.listOfManagerInAPI;
@@ -209,47 +262,69 @@ const actions = {
       }
     });
   },
+  /**
+   * Récupère la liste des manager
+   * @param commit permet de faire des mutations
+   * @returns {Promise<AxiosResponse<any>>} la liste des manager
+   */
   getListOfManager({commit}) {
     return axios.get('/users')
       .then(response => {
         commit('setListOfManager', response.data);
       })
   },
+  /**
+   * Récupère la liste des manager de l'API
+   * @param commit permet de faire des mutations
+   * @returns {Promise<AxiosResponse<any>>} la liste des manager de l'API
+   */
   getListOfManagerInAPI({commit}) {
     return axios.get('/users')
       .then(response => {
         commit('setListOfManagerinAPI', response.data);
       })
   },
+  /**
+   * Récupère la liste des badges
+   * @param commit permet de faire des mutations
+   * @returns {Promise<AxiosResponse<any>>} la liste des badges
+   */
   getListOfBadge({commit}) {
     return axios.get('/badges')
       .then(response => {
         commit('setListOfBadge', response.data);
       })
   },
+  /**
+   * Met a jour les stands
+   * @param state les variable du store
+   * @param commit permet de faire des mutations
+   * @param payload les stands
+   */
   updateStand({state, commit}, payload) {
     let newStand = []
     let badges = state.listOfBadge;
 
     payload.stands.forEach(stand => {
       if (stand === 0) {
-        console.log('cssouge')
         newStand.push(badges[0]);
         newStand.push(badges[1]);
         newStand.push(badges[2]);
         newStand.push(badges[3]);
         newStand.push(badges[4]);
         newStand.push(badges[5]);
-      } else if (stand >= 1 && stand <= 3) {
-        console.log('fdpouge')
+      } else if (stand >= 1 && stand <= 2) {
         newStand.push(badges[stand + 5]);
-      } else if (stand === 4) {
+      } else if (stand === 3) {
+        newStand.push(badges[8]);
         newStand.push(badges[9]);
         newStand.push(badges[10]);
+      } else if (stand === 4) {
         newStand.push(badges[11]);
+        newStand.push(badges[12]);
+        newStand.push(badges[13]);
       } else {
-        console.log('autrouge')
-        newStand.push(badges[stand + 7]);
+        newStand.push(badges[stand + 9]);
       }
     })
     commit('changeStand', {index: payload.id, newStands: newStand});
@@ -293,10 +368,18 @@ const actions = {
   },
 }
 const getters = {
+  /**
+   * Récupère la liste des manager
+   * @param state les variable du store
+   * @returns {[]} la liste des manager
+   */
   getManager: (state) => {
     return state.listOfManager
   },
-
+  /**
+   * Récupère la liste des stands
+   * @returns {Array} la liste des stands
+   */
   getStands: () => {
     return listOfStands;
   },

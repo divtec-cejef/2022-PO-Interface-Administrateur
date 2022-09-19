@@ -11,7 +11,7 @@
         <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail" />
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" @click="simulateProgress(); this.registerUser()" style="width: 150px">
+        <q-btn :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
           S'inscrire
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -31,6 +31,9 @@ import {ref} from 'vue'
 export default {
   name: 'RegisterPage',
   methods: {
+    /**
+     * Crée un utilisateur
+     */
     registerUser() {
       this.$store.dispatch('mainStore/register', {
         "lastname": this.lastname,
@@ -39,6 +42,12 @@ export default {
         "email": this.email,
       })
     },
+    /**
+     * Met a jour les données
+     */
+    update() {
+      this.registerUser();
+    }
   },
   setup() {
     const loading = ref([
@@ -67,6 +76,14 @@ export default {
       progress,
       simulateProgress
     }
+  },
+  beforeMount() {
+    window.addEventListener("keydown", event => {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        this.update();
+      }
+    });
   }
 }
 
