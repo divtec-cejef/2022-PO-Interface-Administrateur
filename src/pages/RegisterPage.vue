@@ -5,19 +5,19 @@
         <h2>Inscription</h2>
       </div>
       <div class="div-form">
-        <q-input outlined color="pink-14" label="Nom" class="input-lastname" />
-        <q-input outlined color="pink-14" label="Prenom" class="input-firstname" />
-        <q-input outlined color="pink-14" label="Nom d'utilisateur" class="input-username" />
-        <q-input outlined color="pink-14" label="Mail" class="input-mail" />
+        <q-input outlined color="pink-14" v-model="lastname" label="Nom" class="input-lastname" />
+        <q-input outlined color="pink-14" v-model="firstname" label="Prenom" class="input-firstname" />
+        <q-input outlined color="pink-14" v-model="username" label="Nom d'utilisateur" class="input-username" />
+        <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail" />
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" @click="simulateProgress()" style="width: 150px">
+        <q-btn :loading="loading" @click="simulateProgress(); this.registerUser()" style="width: 150px">
           S'inscrire
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
           </template>
         </q-btn>
-        <q-btn @click="$router.push('/')">
+        <q-btn @click="$router.push('/data')">
           Retour
         </q-btn>
       </div>
@@ -30,6 +30,16 @@ import {ref} from 'vue'
 
 export default {
   name: 'RegisterPage',
+  methods: {
+    registerUser() {
+      this.$store.dispatch('mainStore/register', {
+        "lastname": this.lastname,
+        "firstname": this.firstname,
+        "username": this.username,
+        "email": this.email,
+      })
+    },
+  },
   setup() {
     const loading = ref([
       false,
@@ -45,10 +55,14 @@ export default {
       setTimeout(() => {
         // we're done, we reset loading state
         loading.value = false
-      }, 3000)
+      }, 500)
     }
 
     return {
+      lastname: ref(''),
+      firstname: ref(''),
+      username: ref(''),
+      email: ref(''),
       loading,
       progress,
       simulateProgress

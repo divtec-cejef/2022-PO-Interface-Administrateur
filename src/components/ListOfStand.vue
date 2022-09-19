@@ -46,6 +46,11 @@ export default {
         "id": this.id - 1,
         "stands": value,
       })
+      if (this.$store.dispatch('mainStore/testDifferenceWithAPI')) {
+        document.querySelector('.btn-add').style.display = 'block';
+      } else {
+        document.querySelector('.btn-add').style.display = 'none';
+      }
     }
   },
   computed: {

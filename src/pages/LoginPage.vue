@@ -19,9 +19,6 @@
             <q-spinner-hourglass class="on-left"/>
           </template>
         </q-btn>
-        <q-btn @click="$router.push('/register')">
-          Crée un compte
-        </q-btn>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@ export default defineComponent({
   mounted() {
     this.$store.dispatch('mainStore/getListOfManager')
     this.$store.dispatch('mainStore/getListOfBadge')
+    this.$store.dispatch('mainStore/getListOfManagerInAPI')
   }
 })
 </script>

@@ -1,6 +1,11 @@
 <template>
     <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
-    <q-btn fab icon="add" color="pink-14" class="btn-add" v-if="isAdmin" @click="updateResponsable"/>
+  <div class="button">
+    <q-btn fab icon="person_add" color="pink-14" class="btn-register" v-if="isAdmin" @click="$router.push('/register')" />
+    <q-btn fab color="positive" class="btn-add" v-if="isAdmin" @click="updateResponsable">
+      <span class="text-btn-add">Enregistrer</span>
+    </q-btn>
+  </div>
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
@@ -11,7 +16,7 @@
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
               <template v-slot:hint>
-                Nom ou prénom
+                Nom / Prénom / Filtre
               </template>
             </q-input>
           </div>
@@ -78,7 +83,7 @@
                 <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
               </template>
               <template v-slot:hint>
-                nom ou prénom
+                Nom / Prénom / Filtre
               </template>
             </q-input>
           </div>
@@ -167,7 +172,7 @@ export default {
             if (!reReforgedPayload.includes('CSS')) {
               reReforgedPayload.push('CSS');
             }
-          } else if (item.includes('cryptage1') || item.includes('cryptage2') || item.includes('cryptage3')) {
+          } else if (item.includes('cryptage lvl1') || item.includes('cryptage lvl2') || item.includes('cryptage lvl3')) {
               if (!reReforgedPayload.includes('Cryptage')) {
                 reReforgedPayload.push('Cryptage');
               }
@@ -259,6 +264,11 @@ export default {
         if (item.first_name.toLowerCase().includes(value.toLowerCase()) || item.last_name.toLowerCase().includes(value.toLowerCase())) {
           this.dataFilter.push(item)
         }
+        item.responsable.forEach((items) => {
+          if (items.nom.toLowerCase().includes(value.toLowerCase()) || (value.toLowerCase() === 'css' && items.nom.toLowerCase().includes('fom'))) {
+            this.dataFilter.push(item)
+          }
+        })
       })
       }
       setTimeout(() => {
@@ -272,6 +282,10 @@ export default {
     }
     this.dataFilter = this.getManager
     this.allUsers = this.getManager
+
+    window.onbeforeunload = function(){
+      return "Do you want to leave?"
+    }
   }
 }
 </script>
@@ -330,12 +344,6 @@ export default {
   align-items: flex-start;
 }
 
-.btn-add {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-}
-
 .btn-disconnect {
   position: fixed;
   top: 16px;
@@ -345,6 +353,40 @@ export default {
   min-width:0 !important;
   height: 40px;
   width: 40px;
+}
+
+.button {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  bottom: 5px;
+  right: 5px;
+  height: fit-content;
+}
+
+.btn-add {
+  display: none;
+  height: 45px;
+  width: auto;
+  margin: 5px;
+  padding: 0 !important;
+  min-height: 0 !important;
+  min-width:0 !important;
+  transition: 0.5s;
+}
+
+.btn-register {
+  height: 45px;
+  width: 45px;
+  margin: 5px;
+  padding: 0 !important;
+  min-height: 0 !important;
+  min-width:0 !important;
+}
+
+.text-btn-add {
+  padding: 10px;
 }
 
 /******************************
