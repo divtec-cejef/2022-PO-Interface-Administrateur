@@ -22,17 +22,28 @@ export default {
     return {
       allManager: [],
       allStand: [],
-      shape: []
+      shape: [],
+      index: 0,
     }
   },
   methods: {
+    /**
+     * return l'identifiant de l'utilisateur traiter
+     */
+    getIdentifiant() {
+      this.allManager.forEach((manager, i) => {
+        if (manager.id === this.id) {
+          this.index = i
+        }
+      });
+    },
     /**
      * Get all stands
      * @returns {*[]} liste de tous les stands
      */
     getStandSelected() {
       let standSelected = [];
-      this.allManager[this.id - 1].responsable.forEach(badge => {
+      this.allManager[this.index].responsable.forEach(badge => {
         if (badge.id === 1 || badge.id === 2 || badge.id === 3 || badge.id === 4 || badge.id === 5 || badge.id === 6) {
           standSelected.push(0);
         } else if (badge.id <= 9) {
@@ -53,7 +64,7 @@ export default {
      */
     shapeChanged(value) {
       this.$store.dispatch('mainStore/updateStand', {
-        "id": this.id - 1,
+        "id": this.index,
         "stands": value,
       })
       if (this.$store.dispatch('mainStore/testDifferenceWithAPI')) {
@@ -64,10 +75,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('mainStore', ['getStands', "getManager", "getListOfSections"]),
+    ...mapGetters('mainStore', ['getStands', "getManager"]),
   },
   mounted() {
     this.allManager = this.getManager;
+    this.getIdentifiant();
     this.allStand = this.getStands
     this.shape = this.getStandSelected();
   }
