@@ -1,7 +1,8 @@
 <template>
-    <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
+  <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
   <div class="button">
-    <q-btn fab icon="person_add" color="pink-14" class="btn-register" v-if="isAdmin" @click="$router.push('/register')" />
+    <q-btn fab icon="person_add" color="pink-14" class="btn-register" v-if="isAdmin"
+           @click="$router.push('/register')"/>
     <q-btn fab color="positive" class="btn-add" v-if="isAdmin" @click="updateResponsable">
       <span class="text-btn-add">Enregistrer</span>
     </q-btn>
@@ -13,7 +14,7 @@
           <div class="div-filter">
             <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
               <template v-slot:append>
-                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
+                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer"/>
               </template>
               <template v-slot:hint>
                 Nom / Prénom / Stands
@@ -42,34 +43,34 @@
           </q-expansion-item>
           <q-separator/>
           <div v-if="loadFiltre">
-          <div v-for="item in dataFilter">
-            <q-expansion-item
-              group="datas"
-              :expand-icon=this.getIcon()
-            >
-              <template v-slot:header="{ expanded }">
-                <q-item-section class="item-section-1">
-                  <p> {{ item.id }} </p>
-                </q-item-section>
-                <q-item-section class="item-section-2">
-                  <p> {{ item.first_name }} {{ item.last_name }} </p>
-                </q-item-section>
-                <q-item-section class="item-section-3">
-                  <p> {{ item.email }} </p>
-                </q-item-section>
-                <q-item-section class="item-section-4">
-                  <p> {{ this.getStylesed( item.responsable) }} </p>
-                </q-item-section>
-              </template>
+            <div v-for="item in dataFilter">
+              <q-expansion-item
+                group="datas"
+                :expand-icon=this.getIcon()
+              >
+                <template v-slot:header="{ expanded }">
+                  <q-item-section class="item-section-1">
+                    <p> {{ item.id }} </p>
+                  </q-item-section>
+                  <q-item-section class="item-section-2">
+                    <p> {{ item.first_name }} {{ item.last_name }} </p>
+                  </q-item-section>
+                  <q-item-section class="item-section-3">
+                    <p> {{ item.email }} </p>
+                  </q-item-section>
+                  <q-item-section class="item-section-4">
+                    <p> {{ this.getStylesed(item.responsable) }} </p>
+                  </q-item-section>
+                </template>
+                <q-separator/>
+                <q-card>
+                  <q-card-section v-if="isAdmin">
+                    <AllStands :id=item.id />
+                  </q-card-section>
+                </q-card>
+              </q-expansion-item>
               <q-separator/>
-              <q-card>
-                <q-card-section v-if="isAdmin">
-                  <AllStands :id=item.id />
-                </q-card-section>
-              </q-card>
-            </q-expansion-item>
-            <q-separator/>
-          </div>
+            </div>
           </div>
         </q-list>
       </div>
@@ -80,7 +81,7 @@
           <div class="div-filter">
             <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
               <template v-slot:append>
-                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer" />
+                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer"/>
               </template>
               <template v-slot:hint>
                 Nom / Prénom / Stands
@@ -96,13 +97,13 @@
             >
               <template v-slot:header="{ expanded }">
                 <div class="header-phone">
-                  <div>
-                    <p> {{ item.first_name }}</p>
-                    <p> {{ item.last_name }} </p>
+                  <div class="phone-name">
+                    <span> {{ item.first_name }} </span>
+                    <span> {{ item.last_name }} </span>
+                    <span> {{ item.email }} </span>
                   </div>
                   <div>
-                    <p> {{ item.email }} </p>
-                    <p> {{ this.getStylesed( item.responsable) }} </p>
+                    <p> {{ this.getStylesed(item.responsable) }} </p>
                   </div>
                 </div>
               </template>
@@ -122,7 +123,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState } from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import AllStands from "components/ListOfStand";
 import {Notify} from 'quasar'
 
@@ -148,7 +149,7 @@ export default {
     updateResponsable() {
       this.$store.dispatch('mainStore/updateResponsable')
       Notify.create({
-          type: 'positive',
+        type: 'positive',
         color: 'positive',
         timeout: 1000,
         position: 'top-right',
@@ -188,9 +189,9 @@ export default {
               reReforgedPayload.push('Robotique');
             }
           } else if (item.includes('cryptage lvl1') || item.includes('cryptage lvl2') || item.includes('cryptage lvl3')) {
-              if (!reReforgedPayload.includes('Cryptage')) {
-                reReforgedPayload.push('Cryptage');
-              }
+            if (!reReforgedPayload.includes('Cryptage')) {
+              reReforgedPayload.push('Cryptage');
+            }
           } else {
             reReforgedPayload.push(item);
           }
@@ -279,18 +280,20 @@ export default {
       if (value === '') {
         this.dataFilter = this.allUsers;
       } else {
-      this.loadFiltre = false
-      this.dataFilter = [];
-      this.allUsers.forEach((item) => {
-        if (item.first_name.toLowerCase().includes(value.toLowerCase()) || item.last_name.toLowerCase().includes(value.toLowerCase())) {
-          this.dataFilter.push(item)
-        }
-        item.responsable.forEach((items) => {
-          if (items.nom.toLowerCase().includes(value.toLowerCase()) || (value.toLowerCase() === 'css' && items.nom.toLowerCase().includes('fom'))) {
+        this.loadFiltre = false
+        this.dataFilter = [];
+        this.allUsers.forEach((item) => {
+          if (item.first_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) || item.last_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
             this.dataFilter.push(item)
           }
+          item.responsable.forEach((items) => {
+            if (items.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) || (value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") === 'css' && items.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes('fom'))) {
+              if (!this.dataFilter.includes(item)) {
+                this.dataFilter.push(item)
+              }
+            }
+          })
         })
-      })
       }
       setTimeout(() => {
         this.loadFiltre = true
@@ -306,7 +309,7 @@ export default {
     this.allUsers = this.getManager
 
     // protection de données non sauvegarder
-    window.onbeforeunload = function(){
+    window.onbeforeunload = function () {
       return "Do you want to leave?"
     }
   }
@@ -344,27 +347,32 @@ export default {
 }
 
 .item-section-2 {
-  margin-right: -20%;
+  margin-right: -15%;
 }
 
 .item-section-3 {
-  margin-right: -20%;
+  margin-right: -15%;
 }
 
 .phone {
   display: none;
 }
 
-.phone .q-separator {
-  border: 1px solid rgba(0, 0, 0, 0.78);
-  height: 0px;
-}
-
-
 .header-phone {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.header-phone div {
+  width: 100%;
+}
+
+.phone-name {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .btn-disconnect {
@@ -373,7 +381,7 @@ export default {
   right: 16px;
   padding: 0 !important;
   min-height: 0 !important;
-  min-width:0 !important;
+  min-width: 0 !important;
   height: 40px;
   width: 40px;
 }
@@ -395,7 +403,7 @@ export default {
   margin: 5px;
   padding: 0 !important;
   min-height: 0 !important;
-  min-width:0 !important;
+  min-width: 0 !important;
   transition: 0.5s;
   z-index: 1;
 }
@@ -406,7 +414,7 @@ export default {
   margin: 5px;
   padding: 0 !important;
   min-height: 0 !important;
-  min-width:0 !important;
+  min-width: 0 !important;
 }
 
 .text-btn-add {
@@ -436,7 +444,13 @@ export default {
 /******************************************
 Responsive
 **************************************** */
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 700px) {
+  .phone-name {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 1100px) {
   .phone {
     display: block;
   }
@@ -450,9 +464,27 @@ Responsive
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1500px) {
   .item-section-4 {
     text-align: right;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  .item-section-4 {
+    text-align: right;
+  }
+
+  .item-section-1 {
+    margin-right: -30%;
+  }
+
+  .item-section-2 {
+    margin-right:-10%;
+  }
+
+  .item-section-3 {
+    margin-right: 0;
   }
 }
 </style>

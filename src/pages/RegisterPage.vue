@@ -5,13 +5,13 @@
         <h2>Inscription</h2>
       </div>
       <div class="div-form">
-        <q-input outlined color="pink-14" v-model="lastname" label="Nom" class="input-lastname" />
-        <q-input outlined color="pink-14" v-model="firstname" label="Prenom" class="input-firstname" />
-        <q-input outlined color="pink-14" v-model="username" label="Nom d'utilisateur" class="input-username" />
-        <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail" />
+        <q-input outlined color="pink-14" v-model="lastname" label="Nom" class="input-lastname"/>
+        <q-input outlined color="pink-14" v-model="firstname" label="Prenom" class="input-firstname"/>
+        <q-input outlined color="pink-14" v-model="username" label="Nom d'utilisateur" class="input-username"/>
+        <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail"/>
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
+        <q-btn class="btn-register" :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
           S'inscrire
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -27,6 +27,7 @@
 
 <script>
 import {ref} from 'vue'
+import { mapState } from "vuex";
 
 export default {
   name: 'RegisterPage',
@@ -48,6 +49,9 @@ export default {
     update() {
       this.registerUser();
     }
+  },
+  computed: {
+    ...mapState('mainStore', ['isConnected']),
   },
   setup() {
     const loading = ref([
@@ -77,13 +81,11 @@ export default {
       simulateProgress
     }
   },
-  beforeMount() {
-    window.addEventListener("keydown", event => {
-      if (event.keyCode == 13) {
-        event.preventDefault();
-        this.update();
-      }
-    });
+  mounted() {
+    // re dirige les utilisateur non connecter
+    if (!this.isConnected) {
+      this.$router.push('/')
+    }
   }
 }
 
@@ -93,7 +95,7 @@ export default {
 <style scoped>
 h2 {
   font-size: 4rem;
-  margin:0 0 10% 0;
+  margin: 0 0 10% 0;
   padding: 1%;
 }
 
@@ -137,7 +139,7 @@ button {
   width: 90%;
 }
 
-.input-lastname,.input-firstname, .input-mail, .input-username {
+.input-lastname, .input-firstname, .input-mail, .input-username {
   width: 100%;
   margin-bottom: 4%;
 }
@@ -154,11 +156,13 @@ Responsive
     width: 60%;
   }
 }
+
 @media screen and (min-width: 1000px) {
   .div-main {
     width: 40%;
   }
 }
+
 @media screen and (min-width: 1700px) {
   .div-main {
     width: 25%;
