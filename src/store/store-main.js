@@ -194,6 +194,8 @@ const actions = {
         "Authorization": "Bearer " + state.connected.access_token,
       }
     }
+
+    // enleve les espace
     payload.firstname = payload.firstname.replaceAll(' ', '');
     payload.lastname = payload.lastname.replaceAll(' ', '');
     payload.username = payload.username.replaceAll(' ', '');
@@ -305,6 +307,7 @@ const actions = {
     let newStand = []
     let badges = state.listOfBadge;
 
+    // push les badges pour qu'elle corresponds avec l'api
     payload.stands.forEach(stand => {
       if (stand === 0) {
         newStand.push(badges[0]);

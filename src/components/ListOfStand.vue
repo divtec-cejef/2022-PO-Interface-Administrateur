@@ -43,6 +43,7 @@ export default {
      */
     getStandSelected() {
       let standSelected = [];
+      // filtre les badges pour selectionner les bons stands
       this.allManager[this.index].responsable.forEach(badge => {
         if (badge.id === 1 || badge.id === 2 || badge.id === 3 || badge.id === 4 || badge.id === 5 || badge.id === 6) {
           standSelected.push(0);
