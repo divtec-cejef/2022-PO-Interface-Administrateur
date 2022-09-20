@@ -2,22 +2,22 @@
   <div class=" container window-height">
     <div class="div-main">
       <div class="div-title">
-        <h2>Connectez-vous</h2>
+        <h2>Connexion</h2>
       </div>
       <div class="div-form">
-        <q-input outlined label="Nom" class="input-nom" />
-        <q-input outlined label="Prenom" class="input-prenom" />
-        <q-input outlined label="Mail" class="input-mail" />
+        <q-input outlined v-model="email" color="pink-14" label="Mail" class="input-mail"/>
+        <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd" :type="isPwd ? 'password' : 'text'">
+          <template v-slot:append>
+            <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
+          </template>
+        </q-input>
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" color="primary" @click="simulateProgress()" style="width: 150px">
+        <q-btn :loading="loading" class="bt-login" @click="simulateProgress(); this.connectUser()" style="width: 150px">
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
           </template>
-        </q-btn>
-        <q-btn color="primary" @click="$router.push('/register')">
-          Crée un compte
         </q-btn>
       </div>
     </div>
@@ -44,14 +44,36 @@ export default {
       setTimeout(() => {
         // we're done, we reset loading state
         loading.value = false
-      }, 3000)
+      }, 500)
     }
 
     return {
+      email: ref(''),
+      password: ref(''),
+      isPwd: ref(true),
       loading,
       progress,
       simulateProgress
     }
+  },
+  methods: {
+    /**
+     * Connect l'utilisateur
+     */
+    connectUser() {
+      this.$store.dispatch('mainStore/login', {
+        email: this.email,
+        password: this.password
+      })
+    }
+  },
+  beforeMount() {
+    window.addEventListener("keydown", event => {
+      if (event.keyCode == 13) {
+        event.preventDefault();
+        this.connectUser()
+      }
+    });
   }
 }
 
@@ -61,12 +83,12 @@ export default {
 <style scoped>
 h2 {
   font-size: 4rem;
-  margin:0 0 5% 0;
+  margin: 0 0 10% 0;
   padding: 1%;
 }
 
 .div-main {
-  width: fit-content;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -93,6 +115,8 @@ h2 {
 
 button {
   font-size: 1.17em;
+  background-color: #DC006B;
+  color: white;
 }
 
 .div-form {
@@ -103,14 +127,34 @@ button {
   width: 90%;
 }
 
-.input-prenom, .input-nom, .input-mail {
+.input-pwd, .input-mail {
   width: 100%;
-  margin-bottom: 2%;
+  margin-bottom: 4%;
 }
 
-.input-mail {
-  margin-bottom: 5%;
+.input-pwd {
+  margin-bottom: 9%;
 }
 
+/******************************************
+Responsive
+**************************************** */
+@media screen and (min-width: 600px) {
+  .div-main {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .div-main {
+    width: 40%;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .div-main {
+    width: 25%;
+  }
+}
 
 </style>
