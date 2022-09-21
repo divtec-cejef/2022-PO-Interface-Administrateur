@@ -219,16 +219,16 @@ export default {
     });
   },
   mounted() {
+    // recharche les données
+    this.$store.dispatch('mainStore/getListOfManager')
+    this.$store.dispatch('mainStore/getListOfBadge')
+    this.$store.dispatch('mainStore/getListOfManagerInAPI')
+
     // re dirige les utilisateur non connecter
     if (!this.isConnected) {
       this.$router.push('/')
     }
     this.dataFilter = this.listOfManager;
-
-/*    // protection de données non sauvegarder
-    window.onbeforeunload = function () {
-      return "Do you want to leave?"
-    }*/
   }
 }
 </script>

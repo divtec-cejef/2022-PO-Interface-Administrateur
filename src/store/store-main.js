@@ -22,9 +22,19 @@ const mutations = {
    * @param payload les stands
    */
   changeStand(state, payload) {
-    state.listOfManager[payload.index].responsable = [];
+    let i = 0;
+    let index = 0;
+
+    // trouve l'index de l'occurance avec l'id de l'utilisateur
+    state.listOfManager.forEach((manager) => {
+      if (manager.id === payload.index) {
+        index = i
+      }
+      i++;
+    })
+    state.listOfManager[index].responsable = [];
     payload.newStands.forEach(stand => {
-      state.listOfManager[payload.index].responsable.push(stand);
+      state.listOfManager[index].responsable.push(stand);
     })
   },
   /**
@@ -283,7 +293,6 @@ const actions = {
    * @param payload les stands
    */
   updateStand({state, commit}, payload) {
-    console.log(payload)
     let newStand = []
     let badges = state.listOfBadge;
 

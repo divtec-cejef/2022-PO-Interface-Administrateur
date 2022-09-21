@@ -62,7 +62,7 @@ export default {
      */
     updateStands() {
       this.$store.dispatch('mainStore/updateStand', {
-        "id": this.id - 1,
+        "id": this.id,
         "stands": this.global_shape,
       })
       this.updateResponsable();
