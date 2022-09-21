@@ -2,7 +2,7 @@
   <div class="q-gutter-sm div-checkbox-container">
     <span class="element" v-for="stand in allStand">
       <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.nom color="pink-14" :title=stand.prix
-                  @click="shapeChanged(shape)"/>
+      @click="shapeChanged"/>
     </span>
   </div>
 </template>
@@ -51,13 +51,9 @@ export default {
     },
     /**
      * modifie les stands sélectionnés
-     * @param value la valeur des stands selectionner
      */
-    shapeChanged(value) {
-      this.$store.dispatch('mainStore/updateStand', {
-        "id": this.index,
-        "stands": value,
-      })
+    shapeChanged() {
+      this.$store.commit('mainStore/updateShape', this.shape);
     }
   },
   computed: {

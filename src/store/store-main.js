@@ -9,9 +9,13 @@ const state = {
   listOfManager: [],
   listOfBadge: [],
   connected: [],
+  global_shape: [],
 }
 
 const mutations = {
+  updateShape(state, payload) {
+    state.global_shape = payload
+  },
   /**
    * Modifi les stands
    * @param state les variable du store
@@ -279,6 +283,7 @@ const actions = {
    * @param payload les stands
    */
   updateStand({state, commit}, payload) {
+    console.log(payload)
     let newStand = []
     let badges = state.listOfBadge;
 

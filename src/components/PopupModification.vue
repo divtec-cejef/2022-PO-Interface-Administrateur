@@ -19,7 +19,7 @@
       <q-separator/>
       <q-card-actions align="right">
         <q-btn flat label="Fermer" v-close-popup/>
-        <q-btn flat label="Enregistrer" color="pink-14" @click="saveData(); updateResponsable()" />
+        <q-btn flat label="Enregistrer" color="pink-14" @click="saveData(); updateStands()" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -27,7 +27,7 @@
 
 <script>
 import {ref} from 'vue'
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState } from 'vuex'
 import ListOfStand from "components/ListOfStand";
 
 export default {
@@ -53,9 +53,20 @@ export default {
     ListOfStand
   },
   computed: {
+    ...mapState('mainStore', ['global_shape']),
     ...mapGetters('mainStore', ['getManager']),
   },
   methods: {
+    /**
+     * modifie les stands sélectionnés
+     */
+    updateStands() {
+      this.$store.dispatch('mainStore/updateStand', {
+        "id": this.id - 1,
+        "stands": this.global_shape,
+      })
+      this.updateResponsable();
+    },
     /**
      * met a jour les responsable
      */
