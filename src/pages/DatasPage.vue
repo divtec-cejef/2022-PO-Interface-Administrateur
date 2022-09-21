@@ -1,8 +1,8 @@
 <template>
-  <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()"/>
+  <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()" title="Se déconnecter"/>
   <div class="button">
-    <q-btn fab icon="person_add" color="pink-14" class="btn-register" v-if="isAdmin"
-           @click="$router.push('/register')"/>
+    <q-btn fab icon="person_add" color="pink-14" class="btn-register"
+           @click="$router.push('/register')" title="Créer un responsable" />
   </div>
   <div class="container">
     <div class="data pc">
@@ -209,6 +209,14 @@ export default {
         this.loadFiltre = true
       }, 10)
     }
+  },
+  beforeMount() {
+    window.addEventListener("keydown", event => {
+      if (event.keyCode == 116) {
+        event.preventDefault();
+        this.$store.dispatch('mainStore/updateData')
+      }
+    });
   },
   mounted() {
     // re dirige les utilisateur non connecter

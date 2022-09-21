@@ -73,6 +73,11 @@ const mutations = {
   }
 }
 const actions = {
+  updateData({dispatch}) {
+    // met a jour les tables
+    dispatch('getListOfManager');
+    dispatch('getListOfManagerInAPI');
+  },
   deleteUser({commit, dispatch}, payload) {
     let config = {
       "headers": {

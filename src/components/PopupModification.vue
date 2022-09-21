@@ -29,7 +29,6 @@
 import {ref} from 'vue'
 import {mapGetters} from 'vuex'
 import ListOfStand from "components/ListOfStand";
-import {Notify} from "quasar";
 
 export default {
   name: "PopupModification.vue",
@@ -73,6 +72,7 @@ export default {
           id: this.id,
           password: this.pwd
         })
+        this.pwd = '';
       }
       // changement du nom si il a été modifié
       if (this.nom !== this.user.last_name) {

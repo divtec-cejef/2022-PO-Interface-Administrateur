@@ -27,5 +27,8 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ErrorNotFound',
+  mounted() {
+    this.$router.push('/')
+  }
 })
 </script>
