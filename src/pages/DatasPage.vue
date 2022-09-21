@@ -3,9 +3,6 @@
   <div class="button">
     <q-btn fab icon="person_add" color="pink-14" class="btn-register" v-if="isAdmin"
            @click="$router.push('/register')"/>
-    <q-btn fab color="positive" class="btn-add" v-if="isAdmin" @click="updateResponsable">
-      <span class="text-btn-add">Enregistrer</span>
-    </q-btn>
   </div>
   <div class="container">
     <div class="data pc">
@@ -45,8 +42,8 @@
           <div v-if="loadFiltre">
             <div v-for="item in dataFilter">
               <q-expansion-item
-                group="datas"
-                :expand-icon=this.getIcon()
+                expand-icon="none"
+                @click="openPopup(item.id)"
               >
                 <template v-slot:header="{ expanded }">
                   <q-item-section class="item-section-1">
@@ -61,13 +58,11 @@
                   <q-item-section class="item-section-4">
                     <p> {{ this.getStylesed(item.responsable) }} </p>
                   </q-item-section>
+                  <q-item-section class="item-section-btn">
+                    <PopupModification :id=item.id />
+                  </q-item-section>
                 </template>
                 <q-separator/>
-                <q-card>
-                  <q-card-section v-if="isAdmin">
-                    <AllStands :id=item.id />
-                  </q-card-section>
-                </q-card>
               </q-expansion-item>
               <q-separator/>
             </div>
@@ -92,8 +87,8 @@
         <q-list bordered class="rounded-borders">
           <div v-for="item in dataFilter">
             <q-expansion-item
-              group="datas"
               expand-icon="none"
+              @click="openPopup(item.id)"
             >
               <template v-slot:header="{ expanded }">
                 <div class="header-phone">
@@ -105,14 +100,12 @@
                   <div>
                     <p> {{ this.getStylesed(item.responsable) }} </p>
                   </div>
+                  <div class="phone-btn-popup">
+                    <PopupModification :id=item.id />
+                  </div>
                 </div>
               </template>
               <q-separator/>
-              <q-card>
-                <q-card-section v-if="isAdmin">
-                  <AllStands :id=item.id />
-                </q-card-section>
-              </q-card>
             </q-expansion-item>
             <q-separator class="q-separator"/>
           </div>
@@ -124,38 +117,31 @@
 
 <script>
 import {mapGetters, mapState} from 'vuex'
-import AllStands from "components/ListOfStand";
-import {Notify} from 'quasar'
+import PopupModification from "components/PopupModification";
 
 export default {
   name: "DatasPage",
-  components: {AllStands},
+  components: {PopupModification},
   data() {
     return {
+      isLoad: false,
       loadFiltre: true,
       dataFilter: [],
       filter: '',
-      allUsers: [],
     }
   },
   computed: {
-    ...mapState('mainStore', ['isConnected', 'isAdmin']),
+    ...mapState('mainStore', ['isConnected', 'isAdmin', "listOfManager"]),
     ...mapGetters('mainStore', ['getManager', 'getStands']),
   },
   methods: {
-    /**
-     * met a jour les responsable
-     */
-    updateResponsable() {
-      this.$store.dispatch('mainStore/updateResponsable')
-      Notify.create({
-        type: 'positive',
-        color: 'positive',
-        timeout: 1000,
-        position: 'top-right',
-        message: 'Base de données mise à jour',
-        progress: true
-      })
+    openPopup(id) {
+      if (!this.isLoad) {
+        this.isLoad = true;
+        let className = '.popup' + id
+        document.querySelector(className).click()
+      }
+      this.isLoad = false;
     },
     /**
      * déconnect l'utilisateur
@@ -187,25 +173,26 @@ export default {
       }
       return list
     },
-    /**
-     * change l'icon en function de l'etat de la connexion
-     */
-    getIcon() {
-      return this.isAdmin ? 'keyboard_arrow_down' : 'none'
-    },
   },
   watch: {
+    listOfManager: function () {
+      this.loadFiltre = false;
+      setTimeout(() => {
+        this.dataFilter = this.listOfManager
+        this.loadFiltre = true;
+      }, 100)
+    },
     /**
      * met a jour les données en fonction de la recherche
      * @param value la valeur de la recherche
      */
     filter(value) {
       if (value === '') {
-        this.dataFilter = this.allUsers;
+        this.dataFilter = this.listOfManager;
       } else {
         this.loadFiltre = false
         this.dataFilter = [];
-        this.allUsers.forEach((item) => {
+        this.listOfManager.forEach((item) => {
           if (item.first_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")) || item.last_name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))) {
             this.dataFilter.push(item)
           }
@@ -228,19 +215,17 @@ export default {
     if (!this.isConnected) {
       this.$router.push('/')
     }
-    this.dataFilter = this.getManager
-    this.allUsers = this.getManager
+    this.dataFilter = this.listOfManager;
 
-    // protection de données non sauvegarder
+/*    // protection de données non sauvegarder
     window.onbeforeunload = function () {
       return "Do you want to leave?"
-    }
+    }*/
   }
 }
 </script>
 
 <style scoped>
-
 .container {
   display: flex;
   justify-content: center;
@@ -275,6 +260,15 @@ export default {
 
 .item-section-3 {
   margin-right: -15%;
+}
+
+.item-section-btn {
+  margin-right: -40%;
+  display: none;
+}
+
+.phone-btn-popup {
+  display: none;
 }
 
 .phone {
@@ -319,18 +313,6 @@ export default {
   height: fit-content;
 }
 
-.btn-add {
-  display: none;
-  height: 45px;
-  width: auto;
-  margin: 5px;
-  padding: 0 !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  transition: 0.5s;
-  z-index: 1;
-}
-
 .btn-register {
   height: 45px;
   width: 45px;
@@ -340,9 +322,6 @@ export default {
   min-width: 0 !important;
 }
 
-.text-btn-add {
-  padding: 10px;
-}
 
 /******************************
   Filtre
@@ -408,6 +387,10 @@ Responsive
 @media screen and (max-width: 1500px) {
   .item-section-4 {
     text-align: right;
+  }
+
+  .item-section-btn {
+    margin-right: -25%;
   }
 }
 </style>

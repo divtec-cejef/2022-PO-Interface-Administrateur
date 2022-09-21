@@ -73,21 +73,67 @@ const mutations = {
   }
 }
 const actions = {
-  /**
-   * test si il y a des différence avec l'api
-   * @param commit permet de faire des mutations
-   * @returns {boolean} si il y a des différence
-   */
-  testDifferenceWithAPI({commit}) {
-    let manager = state.listOfManager
-    let managerAPI = state.listOfManagerInAPI
-
-    manager.forEach((manager, index) => {
-      if (managerAPI[index].responsable !== manager.responsable) {
-        return true
+  deleteUser({commit, dispatch}, payload) {
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
       }
-    })
-    return false
+    }
+    axios.delete('/users/' + payload, config)
+      .then(() => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Utilisateur supprimé',
+          progress: true
+        })
+        // met a jour les tables
+        dispatch('getListOfManager');
+        dispatch('getListOfManagerInAPI');
+      })
+      .catch(() => {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Une erreur s\'est produite lors de la suppression de l\'utilisateur',
+          progress: true
+        })
+      })
+  },
+  updatePassword({commit}, payload) {
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
+      }
+    }
+
+    return axios.post('users/' + payload.id + '/reset', {
+      password: payload.password,
+    }, config)
+      .then(response => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Mot de passe modifié avec succès',
+          progress: true
+        })
+      })
+      .catch(error => {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Une erreur s\'est produite lors de la modification du mot de passe',
+          progress: true
+        })
+      })
   },
   /**
    * Crée un utilsiateur
@@ -166,7 +212,24 @@ const actions = {
             badges_id: forgedData
           }, config)
           .then(response => {
-            document.querySelector('.btn-add').style.display = 'none';
+            Notify.create({
+              type: 'positive',
+              color: 'positive',
+              timeout: 1000,
+              position: 'top-right',
+              message: 'Base de données mise à jour',
+              progress: true
+            })
+          })
+          .catch(error => {
+            Notify.create({
+              type: 'negative',
+              color: 'negative',
+              timeout: 1000,
+              position: 'top-right',
+              message: 'Une erreur s\'est produite lors de la mise à jour de la base de données',
+              progress: true
+            })
           })
       }
     });

@@ -5,18 +5,13 @@
                   @click="shapeChanged(shape)"/>
     </span>
   </div>
-  <PopupModification :id=this.id />
 </template>
 
 <script>
 import {mapGetters} from "vuex";
-import PopupModification from "./PopupModification";
 
 export default {
-  name: "AllStands",
-  components: {
-    PopupModification
-  },
+  name: "ListOfStand",
   props: {
     id: {
       type: Number,
@@ -63,11 +58,6 @@ export default {
         "id": this.index,
         "stands": value,
       })
-      if (this.$store.dispatch('mainStore/testDifferenceWithAPI')) {
-        document.querySelector('.btn-add').style.display = 'block';
-      } else {
-        document.querySelector('.btn-add').style.display = 'none';
-      }
     }
   },
   computed: {
@@ -85,77 +75,22 @@ export default {
 <style scoped>
 .div-checkbox-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: wrap;
-  height: 550px;
+  width: 100%;
 }
 
 .element {
-  width: fit-content;
-}
-
-/*****************************************
-Style des différente section
-****************************************/
-.inf {
-  text-decoration: underline;
-  text-decoration-color: #7d6aa4;
-}
-
-.hor {
-  text-decoration: underline;
-  text-decoration-color: #f8b02a;
-}
-
-.lac {
-  text-decoration: underline;
-  text-decoration-color: #8fc9ba;
-}
-
-.mmc {
-  text-decoration: underline;
-  text-decoration-color: #028fc5;
-}
-
-.dcm {
-  text-decoration: underline;
-  text-decoration-color: #3fa83f;
-}
-
-.elt {
-  text-decoration: underline;
-  text-decoration-color: #e83f78;
-}
-
-.aut {
-  text-decoration: underline;
-  text-decoration-color: #5c2976;
+  width: 100px;
 }
 
 /******************************************
 Responsive
 ******************************************/
 
-@media screen and (min-width: 530px) {
+/*@media screen and (min-width: 600px) {
   .div-checkbox-container {
-    height: 400px;
+    width: 500px;
   }
-}
-@media screen and (min-width: 900px) {
-  .div-checkbox-container {
-    height: 300px;
-  }
-}
-
-@media screen and (min-width: 1100px) {
-  .div-checkbox-container {
-    height: 250px;
-  }
-}
-
-@media screen and (min-width: 1700px) {
-  .div-checkbox-container {
-    height: 200px;
-  }
-}
+}*/
 </style>

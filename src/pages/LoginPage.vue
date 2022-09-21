@@ -67,14 +67,6 @@ export default {
       })
     }
   },
-  beforeMount() {
-    window.addEventListener("keydown", event => {
-      if (event.keyCode == 13) {
-        event.preventDefault();
-        this.connectUser()
-      }
-    });
-  }
 }
 
 
