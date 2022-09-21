@@ -1,17 +1,22 @@
 <template>
   <div class="q-gutter-sm div-checkbox-container">
     <span class="element" v-for="stand in allStand">
-      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.keywords color="pink-14" :title=stand.name
+      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.nom color="pink-14" :title=stand.prix
                   @click="shapeChanged(shape)"/>
     </span>
   </div>
+  <PopupModification :id=this.id />
 </template>
 
 <script>
 import {mapGetters} from "vuex";
+import PopupModification from "./PopupModification";
 
 export default {
   name: "AllStands",
+  components: {
+    PopupModification
+  },
   props: {
     id: {
       type: Number,
@@ -38,24 +43,14 @@ export default {
       });
     },
     /**
-     * Get all stands
+     * return tous les stands selectionner dans l'api
      * @returns {*[]} liste de tous les stands
      */
     getStandSelected() {
       let standSelected = [];
       // filtre les badges pour selectionner les bons stands
       this.allManager[this.index].responsable.forEach(badge => {
-        if (badge.id === 1 || badge.id === 2 || badge.id === 3 || badge.id === 4 || badge.id === 5 || badge.id === 6) {
-          standSelected.push(0);
-        } else if (badge.id <= 9) {
-          standSelected.push(badge.id - 6);
-        } else if (badge.id === 9 || badge.id === 10 || badge.id === 11) {
-          standSelected.push(3);
-        } else if (badge.id === 12 || badge.id === 13 || badge.id === 14) {
-          standSelected.push(4);
-        } else {
-          standSelected.push(badge.id - 10);
-        }
+        standSelected.push(badge.id - 1)
       });
       return standSelected;
     },
@@ -92,7 +87,7 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  height: 350px;
+  height: 550px;
 }
 
 .element {
@@ -140,15 +135,27 @@ Style des différente section
 /******************************************
 Responsive
 ******************************************/
+
+@media screen and (min-width: 530px) {
+  .div-checkbox-container {
+    height: 400px;
+  }
+}
 @media screen and (min-width: 900px) {
   .div-checkbox-container {
-    height: 150px;
+    height: 300px;
   }
 }
 
 @media screen and (min-width: 1100px) {
   .div-checkbox-container {
-    height: 100px;
+    height: 250px;
+  }
+}
+
+@media screen and (min-width: 1700px) {
+  .div-checkbox-container {
+    height: 200px;
   }
 }
 </style>

@@ -7,8 +7,18 @@
       <div class="div-form">
         <q-input outlined color="pink-14" v-model="lastname" label="Nom" class="input-lastname"/>
         <q-input outlined color="pink-14" v-model="firstname" label="Prenom" class="input-firstname"/>
-        <q-input outlined color="pink-14" v-model="username" label="Nom d'utilisateur" class="input-username"/>
         <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail"/>
+        <div class="checkbox-administrator">
+          <q-checkbox
+            left-label
+            v-model="isAdmin"
+            label="Administrateur"
+            checked-icon="task_alt"
+            unchecked-icon="highlight_off"
+            color="pink-14"
+            size="lg"
+          />
+        </div>
       </div>
       <div class="div-button">
         <q-btn class="btn-register" :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
@@ -27,10 +37,15 @@
 
 <script>
 import {ref} from 'vue'
-import { mapState } from "vuex";
+import {mapState} from "vuex";
 
 export default {
   name: 'RegisterPage',
+  data() {
+    return {
+      isAdmin: false,
+    }
+  },
   methods: {
     /**
      * Crée un utilisateur
@@ -39,8 +54,8 @@ export default {
       this.$store.dispatch('mainStore/register', {
         "lastname": this.lastname,
         "firstname": this.firstname,
-        "username": this.username,
         "email": this.email,
+        "is_admin": this.isAdmin,
       })
     },
     /**
@@ -139,13 +154,17 @@ button {
   width: 90%;
 }
 
-.input-lastname, .input-firstname, .input-mail, .input-username {
+.input-lastname, .input-firstname, .input-mail {
   width: 100%;
   margin-bottom: 4%;
 }
 
-.input-mail {
+
+.checkbox-administrator {
+  width: 100%;
+  text-align: left;
   margin-bottom: 9%;
+  font-size: 1.2em;
 }
 
 /******************************************

@@ -172,89 +172,12 @@ export default {
       let list = '';
 
       if (payload !== undefined) {
-        let reforgedPayload = [];
+        let forgedPayload = [];
         payload.forEach(item => {
-          reforgedPayload.push(item.nom);
+          forgedPayload.push(item.nom);
         })
 
-        // met a jour la liste pour a la place d'afficher tous les fom affiche seulement CSS
-        let reReforgedPayload = [];
-        reforgedPayload.forEach((item) => {
-          if (item.includes('fom')) {
-            if (!reReforgedPayload.includes('CSS')) {
-              reReforgedPayload.push('CSS');
-            }
-          } else if (item.includes('robotique lvl1') || item.includes('robotique lvl2') || item.includes('robotique lvl3')) {
-            if (!reReforgedPayload.includes('Robotique')) {
-              reReforgedPayload.push('Robotique');
-            }
-          } else if (item.includes('cryptage lvl1') || item.includes('cryptage lvl2') || item.includes('cryptage lvl3')) {
-            if (!reReforgedPayload.includes('Cryptage')) {
-              reReforgedPayload.push('Cryptage');
-            }
-          } else {
-            reReforgedPayload.push(item);
-          }
-        })
-
-        list = reReforgedPayload.toString();
-        let stand = this.getStands;
-
-        reReforgedPayload.forEach((items) => {
-          switch (items) {
-            case 0:
-              list = list.replace(0, stand[0].keywords);
-              break;
-            case 1:
-              list = list.replace(1, stand[1].keywords);
-              break;
-            case 2:
-              list = list.replace(2, stand[2].keywords);
-              break;
-            case 3:
-              list = list.replace(3, stand[3].keywords);
-              break;
-            case 4:
-              list = list.replace(4, stand[4].keywords);
-              break;
-            case 5:
-              list = list.replace(5, stand[5].keywords);
-              break;
-            case 6:
-              list = list.replace(6, stand[6].keywords);
-              break;
-            case 7:
-              list = list.replace(7, stand[7].keywords);
-              break;
-            case 8:
-              list = list.replace(8, stand[8].keywords);
-              break;
-            case 9:
-              list = list.replace(9, stand[9].keywords);
-              break;
-            case 10:
-              list = list.replace(10, stand[10].keywords);
-              break;
-            case 11:
-              list = list.replace(11, stand[11].keywords);
-              break;
-            case 12:
-              list = list.replace(12, stand[12].keywords);
-              break;
-            case 13:
-              list = list.replace(13, stand[13].keywords);
-              break;
-            case 14:
-              list = list.replace(14, stand[14].keywords);
-              break;
-            case 15:
-              list = list.replace(15, stand[15].keywords);
-              break;
-            case 16:
-              list = list.replace(16, stand[16].keywords);
-              break;
-          }
-        })
+        list = forgedPayload.toString();
 
         // remplace les element non voulu dans le strings
         list = list.replaceAll(',', ', ')
@@ -464,12 +387,6 @@ Responsive
   }
 }
 
-@media screen and (max-width: 1500px) {
-  .item-section-4 {
-    text-align: right;
-  }
-}
-
 @media screen and (max-width: 1400px) {
   .item-section-4 {
     text-align: right;
@@ -485,6 +402,12 @@ Responsive
 
   .item-section-3 {
     margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 1500px) {
+  .item-section-4 {
+    text-align: right;
   }
 }
 </style>
