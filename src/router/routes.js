@@ -1,5 +1,6 @@
 import RegisterPage from 'pages/RegisterPage'
 import DatasPage from "pages/DatasPage";
+import BadgesPage from "pages/BadgesPage";
 
 const routes = [
   {
@@ -25,6 +26,11 @@ const routes = [
     path: '/data',
     name: 'data',
     component: DatasPage
+  },
+  {
+    path: '/badge',
+    name: 'badge',
+    component: BadgesPage
   }
 ]
 

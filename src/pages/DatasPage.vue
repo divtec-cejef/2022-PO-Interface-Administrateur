@@ -2,7 +2,11 @@
   <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()" title="Se déconnecter"/>
   <div class="button">
     <q-btn fab icon="person_add" color="pink-14" class="btn-register"
-           @click="$router.push('/register')" title="Créer un responsable" />
+           @click="$router.push('/register')" title="Créer un responsable"/>
+  </div>
+  <div class="button">
+    <q-btn fab icon="post_add" color="pink-14" class="btn-badges"
+           @click="$router.push('/badge')" title="Modifier les badges"/>
   </div>
   <div class="container">
     <div class="data pc">
@@ -330,6 +334,16 @@ export default {
   min-width: 0 !important;
 }
 
+.btn-badges {
+  height: 45px;
+  width: 45px;
+  margin: 5px;
+  padding: 0 !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  bottom: 55px;
+}
+
 
 /******************************
   Filtre
@@ -384,7 +398,7 @@ Responsive
   }
 
   .item-section-2 {
-    margin-right:-10%;
+    margin-right: -10%;
   }
 
   .item-section-3 {
