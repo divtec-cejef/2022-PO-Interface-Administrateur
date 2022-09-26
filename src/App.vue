@@ -20,4 +20,8 @@ export default defineComponent({
 :root {
   --color-divtec: #DC006B;
 }
+
+#q-app {
+  width: 100%;
+}
 </style>

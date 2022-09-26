@@ -1,4 +1,6 @@
 <template>
+  <div class="container-menu window-height">
+  <NavigationFloat selected='1' />
   <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()" title="Se déconnecter"/>
   <div class="button">
     <q-btn fab icon="person_add" color="pink-14" class="btn-register"
@@ -117,15 +119,17 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import {mapGetters, mapState} from 'vuex'
 import PopupModification from "components/PopupModification";
+import NavigationFloat from "components/NavigationFloat";
 
 export default {
   name: "DatasPage",
-  components: {PopupModification},
+  components: {PopupModification, NavigationFloat},
   data() {
     return {
       isLoad: false,
@@ -238,6 +242,11 @@ export default {
 </script>
 
 <style scoped>
+.container-menu {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
 .container {
   display: flex;
   justify-content: center;
@@ -371,6 +380,7 @@ export default {
 /******************************************
 Responsive
 **************************************** */
+
 @media screen and (max-width: 700px) {
   .phone-name {
     flex-direction: column;

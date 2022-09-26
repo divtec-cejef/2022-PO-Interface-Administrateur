@@ -1,4 +1,6 @@
 <template>
+  <div class="container-menu window-height">
+    <NavigationFloat selected='3' />
   <div class="button">
     <q-btn fab icon="add" color="pink-14" class="btn-create-badge"
            @click="$router.push('/create-badge')" title="Créer un badge"/>
@@ -104,15 +106,18 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 <script>
 import {mapGetters, mapState} from "vuex";
 import PopupBadges from "components/PopupBadges";
+import NavigationFloat from "components/NavigationFloat";
 
 export default {
   name: "BadgesPage",
   components: {
-    PopupBadges
+    PopupBadges,
+    NavigationFloat
   },
   data() {
     return {
@@ -175,7 +180,11 @@ export default {
 </script>
 
 <style scoped>
-
+.container-menu {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
 .container {
   display: flex;
   justify-content: center;

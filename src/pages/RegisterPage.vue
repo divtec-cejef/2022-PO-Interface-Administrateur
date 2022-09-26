@@ -1,4 +1,6 @@
 <template>
+  <div class="container-menu window-height">
+  <NavigationFloat selected='2' />
   <div class=" container window-height">
     <div class="div-main">
       <div class="div-title">
@@ -33,11 +35,13 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
 import {ref} from 'vue'
 import {mapState} from "vuex";
+import NavigationFloat from "components/NavigationFloat";
 
 export default {
   name: 'RegisterPage',
@@ -45,6 +49,9 @@ export default {
     return {
       isAdmin: false,
     }
+  },
+  components: {
+    NavigationFloat
   },
   methods: {
     /**
@@ -108,6 +115,11 @@ export default {
 </script>
 
 <style scoped>
+.container-menu {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
 h2 {
   font-size: 4rem;
   margin: 0 0 10% 0;
@@ -126,6 +138,7 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 
 .div-title {
