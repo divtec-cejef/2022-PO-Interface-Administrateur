@@ -85,9 +85,11 @@
               <template v-slot:header="{ expanded }">
                 <div class="header-phone">
                   <div class="phone-name">
-                    <span> {{ item.nom }} </span>
-                    <span> {{ item.prix }} </span>
-                    <span> {{ this.getStylesed(item.responsable) }} </span>
+                    <ul>
+                      <li class="li-nom">{{ item.nom }}</li>
+                      <li class="li-prix">{{ item.prix }}</li>
+                      <li class="li-section">{{ this.getStylesed(item.section_id )}}</li>
+                    </ul>
                   </div>
                   <div class="phone-btn-popup">
                     <PopupBadges :id=item.id />
@@ -228,6 +230,28 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.header-phone ul {
+  width: 100%;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-phone li {
+  display: inline-block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.li-nom {
+  width: 35%;
+}
+
+.li-prix {
+  width: 35%;
 }
 
 .header-phone div {

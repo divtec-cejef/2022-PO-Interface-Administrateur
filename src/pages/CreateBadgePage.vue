@@ -207,7 +207,11 @@ Responsive
 
 @media screen and (min-width: 1700px) {
   .div-main {
-    width: 25%;
+    width: 30%;
+    text-align: center;
+  }
+  .div-title {
+    width: 100%;
   }
 }
 
