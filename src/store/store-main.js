@@ -10,6 +10,7 @@ const state = {
   listOfBadge: [],
   connected: [],
   global_shape: [],
+  sections: [],
 }
 
 const mutations = {
@@ -77,6 +78,9 @@ const mutations = {
   setListOfBadge(state, payload) {
     state.listOfBadge = payload;
   },
+  setSections(state, payload) {
+    state.sections = payload;
+  },
   /**
    * met a jour l'utilisateur connecter
    * @param state les variable du store
@@ -91,6 +95,37 @@ const actions = {
     // met a jour les tables
     dispatch('getListOfManager');
     dispatch('getListOfManagerInAPI');
+    dispatch('getListOfBadge');
+  },
+  deleteBadge({commit, dispatch}, payload) {
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
+      }
+    }
+    axios.delete('/badges/' + payload, config)
+      .then(() => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Badge supprimé',
+          progress: true
+        })
+        // met a jour les tables
+        dispatch('getListOfBadge');
+      })
+      .catch(() => {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Une erreur s\'est produite lors de la suppression du badge',
+          progress: true
+        })
+      })
   },
   deleteUser({commit, dispatch}, payload) {
     let config = {
@@ -119,6 +154,40 @@ const actions = {
           timeout: 1000,
           position: 'top-right',
           message: 'Une erreur s\'est produite lors de la suppression de l\'utilisateur',
+          progress: true
+        })
+      })
+  },
+  updateBadges({dispatch, state}, payload) {
+    console.log(payload)
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
+      }
+    }
+    return axios.put('badges/' + payload.id, {
+      nom: payload.badge_nom,
+      prix: payload.badge_prix,
+      section_id: payload.badge_section_id,
+    }, config)
+      .then(response => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Badge modifié avec succès',
+          progress: true
+        })
+        dispatch('getListOfBadge');
+      })
+      .catch(error => {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Une erreur s\'est produite lors de la modification du badge',
           progress: true
         })
       })
@@ -205,6 +274,54 @@ const actions = {
       })
   },
   /**
+   * Crée un utilsiateur
+   * @param dispatch permet de faire des actions
+   * @param commit permet de faire des mutations
+   * @param payload les données de l'utilisateur
+   * @returns {Promise<T>} les données de l'utilisateur
+   */
+  createBadge({dispatch, commit}, payload) {
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
+      }
+    }
+
+    // enleve les espace
+    payload.badge_nom = payload.badge_nom.replaceAll(' ', '');
+    payload.badge_prix = payload.badge_prix.replaceAll(' ', '');
+    payload.section_id = payload.section_id.replaceAll(' ', '');
+
+    return axios
+      .post('badges', {
+        nom: payload.badge_nom,
+        prix: payload.badge_prix,
+        section_id: payload.section_id,
+      }, config)
+      .then(response => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Badge créé !',
+          progress: true
+        })
+        dispatch('getListOfBadge')
+      })
+      .catch(error => {
+        console.log(error)
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Erreur lors de la création du badge !',
+          progress: true
+        })
+      })
+  },
+  /**
    * Met a jour les responsable
    * @param state les variable du store
    */
@@ -284,6 +401,17 @@ const actions = {
     return axios.get('/badges')
       .then(response => {
         commit('setListOfBadge', response.data);
+      })
+  },
+  /**
+   * Récupère la liste des sections
+   * @param commit permet de faire des mutations
+   * @returns {Promise<AxiosResponse<any>>} la liste des sections
+   */
+  getSections({commit}) {
+    return axios.get('/sections')
+      .then(response => {
+        commit('setSections', response.data);
       })
   },
   /**

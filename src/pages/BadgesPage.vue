@@ -1,4 +1,8 @@
 <template>
+  <div class="button">
+    <q-btn fab icon="add" color="pink-14" class="btn-create-badge"
+           @click="$router.push('/create-badge')" title="Créer un badge"/>
+  </div>
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
@@ -23,7 +27,7 @@
           </q-expansion-item>
           <q-separator/>
           <div>
-            <div v-for="item in badges">
+            <div v-for="item in listOfBadge">
               <q-expansion-item
                 expand-icon="none"
                 @click="openPopup(item.id)"
@@ -73,7 +77,7 @@
             </template>
           </q-expansion-item>
           <q-separator/>
-          <div v-for="item in badges">
+          <div v-for="item in listOfBadge">
             <q-expansion-item
               expand-icon="none"
               @click="openPopup(item.id)"
@@ -110,12 +114,11 @@ export default {
   },
   data() {
     return {
-      badges: [],
       isLoad: false,
     };
   },
   computed: {
-    ...mapState('mainStore', ['isConnected']),
+    ...mapState('mainStore', ['isConnected', "listOfBadge"]),
     ...mapGetters('mainStore', ['getStands']),
   },
   methods: {
@@ -123,7 +126,6 @@ export default {
       if (!this.isLoad) {
         this.isLoad = true;
         let className = '.popup' + id
-        console.log(className)
         document.querySelector(className).click()
       }
       this.isLoad = false;
@@ -134,17 +136,37 @@ export default {
      * @returns {string}
      */
     getStylesed(id) {
-      let style = "en dev";
-      return style;
+      switch (id) {
+        case 1:
+          return 'INF'
+        case 2:
+          return 'HOR'
+        case 3:
+          return 'LAC'
+        case 4:
+          return 'MMC'
+        case 5:
+          return 'DCM'
+        case 6:
+          return 'ELT'
+        case 7:
+          return 'AUT'
+      }
     },
   },
-
+  beforeMount() {
+    window.addEventListener("keydown", event => {
+      if (event.keyCode == 116) {
+        event.preventDefault();
+        this.$store.dispatch('mainStore/updateData')
+      }
+    });
+  },
   mounted() {
     // Redirige les utilisateurs non connectés
     if (!this.isConnected) {
       this.$router.push('/')
     }
-    this.badges = this.getStands;
   }
 }
 
@@ -216,6 +238,17 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.btn-create-badge {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  height: 40px;
+  width: 40px;
+  padding: 0 !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
 }
 
 /******************************************

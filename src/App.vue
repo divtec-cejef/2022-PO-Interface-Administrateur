@@ -11,6 +11,7 @@ export default defineComponent({
     this.$store.dispatch('mainStore/getListOfManager')
     this.$store.dispatch('mainStore/getListOfBadge')
     this.$store.dispatch('mainStore/getListOfManagerInAPI')
+    this.$store.dispatch('mainStore/getSections')
   }
 })
 </script>
