@@ -4,7 +4,7 @@
     <q-card  style="width: 500px; max-width: 500px;">
       <q-card-section class="header">
         <div class="text-h6">Modification de {{ prenom }} {{ nom }} </div>
-        <q-btn flat-left label="Supprimer" color="red-14" @click="deleteUser()" v-close-popup/>
+        <q-btn flat icon="close" title="Fermer" v-close-popup/>
       </q-card-section>
       <q-separator/>
       <q-card-section style="max-height: 50vh;" class="scroll">
@@ -17,9 +17,9 @@
         <ListOfStand :id=this.id />
       </q-card-section>
       <q-separator/>
-      <q-card-actions align="right">
-        <q-btn flat label="Fermer" v-close-popup/>
+      <q-card-actions align="between">
         <q-btn flat label="Enregistrer" color="pink-14" @click="saveData(); updateStands()" />
+        <q-btn flat-left label="Supprimer" color="red-14" @click="deleteUser()" v-close-popup/>
       </q-card-actions>
     </q-card>
   </q-dialog>

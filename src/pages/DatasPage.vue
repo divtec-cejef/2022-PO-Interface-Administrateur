@@ -320,21 +320,23 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: end;
-  bottom: 5px;
-  right: 5px;
   height: fit-content;
 }
 
 .btn-register {
+  position: fixed;
   height: 45px;
   width: 45px;
   margin: 5px;
   padding: 0 !important;
   min-height: 0 !important;
   min-width: 0 !important;
+  bottom: 5px;
+  right: 5px;
 }
 
 .btn-badges {
+  position: fixed;
   height: 45px;
   width: 45px;
   margin: 5px;
@@ -342,6 +344,7 @@ export default {
   min-height: 0 !important;
   min-width: 0 !important;
   bottom: 55px;
+  right: 5px;
 }
 
 

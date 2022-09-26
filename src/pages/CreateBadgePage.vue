@@ -7,7 +7,7 @@
     <div class="div-form">
       <q-input outlined color="pink-14" v-model="badge_nom" label="Nom du badge" class="input-badge-nom"/>
       <q-input outlined color="pink-14" v-model="badge_prix" label="Prix" class="input-badge-prix"/>
-      <q-select outlined v-model="badge_section_id" :options="sections" color="pink-14" label="Nouvelle section" class="input-badge-section" />
+      <q-select outlined v-model="badge_section_id_stylesed" :options=options color="pink-14" label="Nouvelle section" class="input-badge-section" />
     </div>
     <div class="div-button">
       <q-btn class="btn-register" :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
@@ -30,11 +30,60 @@ import {mapState} from "vuex";
 
 export default {
   name: "CreateBadgePage",
+  data() {
+    return {
+      badge_section_id: '',
+      badge_section_id_stylesed: '',
+      options: [],
+    }
+  },
   methods: {
+    getStylesed(id) {
+      switch (id) {
+        case 1:
+          return 'INF'
+        case 2:
+          return 'HOR'
+        case 3:
+          return 'LAC'
+        case 4:
+          return 'MMC'
+        case 5:
+          return 'DCM'
+        case 6:
+          return 'ELT'
+        case 7:
+          return 'AUT'
+      }
+    },
+    getStylesedInvert(nom) {
+      switch (nom) {
+        case 'INF':
+          return '1'
+        case 'HOR':
+          return '2'
+        case 'LAC':
+          return '3'
+        case 'MMC':
+          return '4'
+        case 'DCM':
+          return '5'
+        case 'ELT':
+          return '6'
+        case 'AUT':
+          return '7'
+      }
+    } ,
+    initializeOptions() {
+      this.sections.forEach((section) => {
+        this.options.push(section.nom)
+      })
+    },
     /**
      * Crée un utilisateur
      */
     createBadge() {
+      this.badge_section_id = this.getStylesedInvert(this.badge_section_id_stylesed);
       this.$store.dispatch('mainStore/createBadge', {
         "badge_nom": this.badge_nom,
         "badge_prix": this.badge_prix,
@@ -83,6 +132,8 @@ export default {
     if (!this.isConnected) {
       this.$router.push('/')
     }
+    this.initializeOptions();
+    this.badge_section_id_stylesed = this.getStylesed(this.badge_section_id);
   }
 }
 </script>

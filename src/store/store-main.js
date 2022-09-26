@@ -288,7 +288,6 @@ const actions = {
     }
 
     // enleve les espace
-    payload.badge_nom = payload.badge_nom.replaceAll(' ', '');
     payload.badge_prix = payload.badge_prix.replaceAll(' ', '');
     payload.section_id = payload.section_id.replaceAll(' ', '');
 
