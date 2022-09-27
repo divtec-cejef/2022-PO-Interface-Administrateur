@@ -96,6 +96,8 @@ export default {
           return 'ELT'
         case 7:
           return 'AUT'
+        case 8:
+          return 'ENT'
       }
     },
    getStylesedInvert(nom) {
@@ -114,6 +116,8 @@ export default {
           return '6'
         case 'AUT':
           return '7'
+        case 'ENT':
+          return '8'
       }
    } ,
   },

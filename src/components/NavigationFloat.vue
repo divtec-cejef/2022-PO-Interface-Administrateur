@@ -1,4 +1,5 @@
 <template>
+  <div class="container-for-panel">
   <div class="panel" v-show="status">
     <div class="button">
       <q-btn right flat icon="close" title="Fermer" @click="closeMenu" class="btn-fermer"/>
@@ -13,6 +14,7 @@
   </div>
   <div v-show="!status">
     <q-btn flat icon="menu" title="Menu" @click="openMenu" class="btn-ouvrir"/>
+  </div>
   </div>
 </template>
 
@@ -37,6 +39,15 @@ export default {
     },
     openMenu() {
       this.status = true;
+    }
+  },
+  watch: {
+    status(value) {
+      if (value) {
+        document.querySelector('.container-for-panel').style.width = '340px';
+      } else {
+        document.querySelector('.container-for-panel').style.width = '0';
+      }
     }
   },
   mounted() {
@@ -81,6 +92,11 @@ export default {
   background-color: #f5f5f5;
   box-shadow: #5d5d5d 0 0 5px;
   width: 340px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
 }
 
 ul {
@@ -124,7 +140,7 @@ Responsive
   }
   .panel {
     height: 100%;
-    width: 620px;
+    width: 620px !important;
     position: fixed;
     z-index: 100;
     padding: 10px;
@@ -135,6 +151,9 @@ Responsive
 }
 
 @media screen and (max-width: 1100px) {
+  .panel {
+    width: 220px;
+  }
   ul {
     width: 200px;
   }
@@ -146,16 +165,25 @@ Responsive
   }
 }
 @media screen and (min-width: 900px) {
+  .panel {
+    width: 240px;
+  }
   .btn-fermer {
     left: 200px;
   }
 }
 @media screen and (min-width: 1110px) {
+  .panel {
+    width: 260px;
+  }
   .btn-fermer {
     left: 215px;
   }
 }
 @media screen and (min-width: 1300px) {
+  .panel {
+    width: 280px;
+  }
   .btn-fermer {
     left: 225px;
   }

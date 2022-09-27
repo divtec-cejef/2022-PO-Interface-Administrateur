@@ -158,6 +158,8 @@ export default {
           return 'ELT'
         case 7:
           return 'AUT'
+        case 8:
+          return 'ENT'
       }
     },
   },
