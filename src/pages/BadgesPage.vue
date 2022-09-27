@@ -2,8 +2,8 @@
   <div class="container-menu window-height">
     <NavigationFloat selected='3' />
   <div class="button">
-    <q-btn fab icon="add" color="pink-14" class="btn-create-badge"
-           @click="$router.push('/create-badge')" title="Créer un badge"/>
+    <q-btn class="btn-create-badge" color="pink-14" fab icon="add"
+           title="Créer un badge" @click="$router.push('/create-badge')"/>
   </div>
   <div class="container">
     <div class="data pc">
@@ -129,6 +129,10 @@ export default {
     ...mapGetters('mainStore', ['getStands']),
   },
   methods: {
+    /**
+     * Ouvre la popup de modification du badge
+     * @param id l'id du badge
+     */
     openPopup(id) {
       if (!this.isLoad) {
         this.isLoad = true;
@@ -138,9 +142,9 @@ export default {
       this.isLoad = false;
     },
     /**
-     * return le nom de la section
-     * @param id
-     * @returns {string}
+     * Retourne le nom de la section en fonction de son id
+     * @param id l'id de la section
+     * @returns {string} le nom de la section
      */
     getStylesed(id) {
       switch (id) {
@@ -164,6 +168,7 @@ export default {
     },
   },
   beforeMount() {
+    // Agit sur la touche F5
     window.addEventListener("keydown", event => {
       if (event.keyCode == 116) {
         event.preventDefault();
@@ -178,7 +183,6 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
@@ -187,6 +191,7 @@ export default {
   height: 100%;
   width: 100%;
 }
+
 .container {
   display: flex;
   justify-content: center;

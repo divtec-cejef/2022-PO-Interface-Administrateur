@@ -1,23 +1,23 @@
 <template>
   <div class="container-menu">
   <NavigationFloat selected='1' />
-  <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()" title="Se déconnecter"/>
+  <q-btn class="btn-disconnect" color="pink-14" fab icon="logout" title="Se déconnecter" @click="logout()"/>
   <div class="button">
-    <q-btn fab icon="person_add" color="pink-14" class="btn-register"
-           @click="$router.push('/register')" title="Créer un responsable"/>
+    <q-btn class="btn-register" color="pink-14" fab icon="person_add"
+           title="Créer un responsable" @click="$router.push('/register')"/>
   </div>
   <div class="button">
-    <q-btn fab icon="post_add" color="pink-14" class="btn-badges"
-           @click="$router.push('/badge')" title="Modifier les badges"/>
+    <q-btn class="btn-badges" color="pink-14" fab icon="post_add"
+           title="Modifier les badges" @click="$router.push('/badge')"/>
   </div>
   <div class="container">
     <div class="data pc">
       <div class="q-pa-md">
         <div class="div-container-filter">
           <div class="div-filter">
-            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
+            <q-input v-model="filter" bottom-slots color="pink-14" counter label="Filtre" maxlength="30">
               <template v-slot:append>
-                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer"/>
+                <q-icon v-if="filter !== ''" class="cursor-pointer" name="close" @click="filter = ''"/>
               </template>
               <template v-slot:hint>
                 Nom / Prénom / Stands
@@ -80,9 +80,9 @@
       <div class="q-pa-md">
         <div class="div-container-filter">
           <div class="div-filter">
-            <q-input v-model="filter" bottom-slots label="Filtre" counter maxlength="30" color="pink-14">
+            <q-input v-model="filter" bottom-slots color="pink-14" counter label="Filtre" maxlength="30">
               <template v-slot:append>
-                <q-icon v-if="filter !== ''" name="close" @click="filter = ''" class="cursor-pointer"/>
+                <q-icon v-if="filter !== ''" class="cursor-pointer" name="close" @click="filter = ''"/>
               </template>
               <template v-slot:hint>
                 Nom / Prénom / Stands
@@ -143,6 +143,10 @@ export default {
     ...mapGetters('mainStore', ['getManager', 'getStands']),
   },
   methods: {
+    /**
+     * Ouvre la popup
+     * @param id l'id du manager
+     */
     openPopup(id) {
       if (!this.isLoad) {
         this.isLoad = true;
@@ -152,14 +156,14 @@ export default {
       this.isLoad = false;
     },
     /**
-     * déconnect l'utilisateur
+     * Déconnecte l'utilisateur
      */
     logout() {
       window.location.reload();
     },
     /**
-     * r'envoie une amélioration visuelle des stands
-     * @param payload les stands selectionner
+     * Renvoie une amélioration visuelle des stands
+     * @param payload les stands sélectionnés
      * @returns {string} string de tous les stands
      */
     getStylesed(payload) {
@@ -173,7 +177,7 @@ export default {
 
         list = forgedPayload.toString();
 
-        // remplace les element non voulu dans le strings
+        // Remplace les éléments non voulus dans la string
         list = list.replaceAll(',', ', ')
         list = list.replaceAll('"', '')
         list = list.replaceAll('[', '')
@@ -183,6 +187,9 @@ export default {
     },
   },
   watch: {
+    /**
+     * Liste des managers
+     */
     listOfManager: function () {
       this.loadFiltre = false;
       setTimeout(() => {
@@ -191,7 +198,7 @@ export default {
       }, 100)
     },
     /**
-     * met a jour les données en fonction de la recherche
+     * Met à jour les données en fonction de la recherche
      * @param value la valeur de la recherche
      */
     filter(value) {
@@ -219,6 +226,7 @@ export default {
     }
   },
   beforeMount() {
+    // Agit sur la touche F5
     window.addEventListener("keydown", event => {
       if (event.keyCode == 116) {
         event.preventDefault();
@@ -227,12 +235,12 @@ export default {
     });
   },
   mounted() {
-    // recharche les données
+    // Recharge les données
     this.$store.dispatch('mainStore/getListOfManager')
     this.$store.dispatch('mainStore/getListOfBadge')
     this.$store.dispatch('mainStore/getListOfManagerInAPI')
 
-    // re dirige les utilisateur non connecter
+    // Redirige les utilisateurs non connectés
     if (!this.isConnected) {
       this.$router.push('/')
     }
@@ -247,6 +255,7 @@ export default {
   height: 100%;
   width: 100%;
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -355,7 +364,6 @@ export default {
   bottom: 55px;
   right: 5px;
 }
-
 
 /******************************
   Filtre

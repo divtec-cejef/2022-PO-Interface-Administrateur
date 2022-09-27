@@ -7,23 +7,23 @@
         <h2>Inscription</h2>
       </div>
       <div class="div-form">
-        <q-input outlined color="pink-14" v-model="lastname" label="Nom" class="input-lastname"/>
-        <q-input outlined color="pink-14" v-model="firstname" label="Prenom" class="input-firstname"/>
-        <q-input outlined color="pink-14" v-model="email" label="Mail" class="input-mail"/>
+        <q-input v-model="lastname" class="input-lastname" color="pink-14" label="Nom" outlined/>
+        <q-input v-model="firstname" class="input-firstname" color="pink-14" label="Prenom" outlined/>
+        <q-input v-model="email" class="input-mail" color="pink-14" label="Mail" outlined/>
         <div class="checkbox-administrator">
           <q-checkbox
-            left-label
             v-model="isAdmin"
-            label="Administrateur"
             checked-icon="task_alt"
-            unchecked-icon="highlight_off"
             color="pink-14"
+            label="Administrateur"
+            left-label
             size="lg"
+            unchecked-icon="highlight_off"
           />
         </div>
       </div>
       <div class="div-button">
-        <q-btn class="btn-register" :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
+        <q-btn :loading="loading" class="btn-register" style="width: 150px" @click="simulateProgress(); this.update()">
           S'inscrire
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -66,7 +66,7 @@ export default {
       })
     },
     /**
-     * Met a jour les données
+     * Met à jour les données
      */
     update() {
       this.registerUser();
@@ -104,7 +104,7 @@ export default {
     }
   },
   mounted() {
-    // re dirige les utilisateur non connecter
+    // Redirige les utilisateurs non connectés
     if (!this.isConnected) {
       this.$router.push('/')
     }
@@ -120,6 +120,7 @@ export default {
   height: 100%;
   width: 100%;
 }
+
 h2 {
   font-size: 4rem;
   margin: 0 0 10% 0;
@@ -144,7 +145,6 @@ h2 {
 .div-title {
   display: block ruby;
 }
-
 
 .div-button {
   display: flex;
@@ -171,7 +171,6 @@ button {
   width: 100%;
   margin-bottom: 4%;
 }
-
 
 .checkbox-administrator {
   width: 100%;
@@ -200,5 +199,4 @@ Responsive
     width: 25%;
   }
 }
-
 </style>

@@ -5,16 +5,16 @@
         <h2>Connexion</h2>
       </div>
       <div class="div-form">
-        <q-input outlined v-model="email" color="pink-14" label="Mail" class="input-mail"/>
-        <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd"
-                 :type="isPwd ? 'password' : 'text'">
+        <q-input v-model="email" class="input-mail" color="pink-14" label="Mail" outlined/>
+        <q-input v-model="password" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14" label="Mot de passe"
+                 outlined>
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
           </template>
         </q-input>
       </div>
       <div class="div-button">
-        <q-btn :loading="loading" class="bt-login" @click="simulateProgress(); this.connectUser()" style="width: 150px">
+        <q-btn :loading="loading" class="bt-login" style="width: 150px" @click="simulateProgress(); this.connectUser()">
           Se connecter
           <template v-slot:loading>
             <q-spinner-hourglass class="on-left"/>
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     /**
-     * Connect l'utilisateur
+     * Connecte l'utilisateur
      */
     connectUser() {
       this.$store.dispatch('mainStore/login', {

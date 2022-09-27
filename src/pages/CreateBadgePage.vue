@@ -7,12 +7,12 @@
       <h2>Création de badge</h2>
     </div>
     <div class="div-form">
-      <q-input outlined color="pink-14" v-model="badge_nom" label="Nom du badge" class="input-badge-nom"/>
-      <q-input outlined color="pink-14" v-model="badge_prix" label="Prix" class="input-badge-prix"/>
-      <q-select outlined v-model="badge_section_id_stylesed" :options=options color="pink-14" label="Nouvelle section" class="input-badge-section" />
+      <q-input v-model="badge_nom" class="input-badge-nom" color="pink-14" label="Nom du badge" outlined/>
+      <q-input v-model="badge_prix" class="input-badge-prix" color="pink-14" label="Prix" outlined/>
+      <q-select v-model="badge_section_id_stylesed" :options=options class="input-badge-section" color="pink-14" label="Nouvelle section" outlined />
     </div>
     <div class="div-button">
-      <q-btn class="btn-register" :loading="loading" @click="simulateProgress(); this.update()" style="width: 150px">
+      <q-btn :loading="loading" class="btn-register" style="width: 150px" @click="simulateProgress(); this.update()">
         Ajouter
         <template v-slot:loading>
           <q-spinner-hourglass class="on-left"/>
@@ -45,6 +45,11 @@ export default {
     NavigationFloat
   },
   methods: {
+    /**
+     * Retourne le nom de la section en fonction de son id
+     * @param id l'id de la section
+     * @returns {string} le nom de la section
+     */
     getStylesed(id) {
       switch (id) {
         case 1:
@@ -65,6 +70,11 @@ export default {
           return 'ENT'
       }
     },
+    /**
+     * Retourne l'id de la section en fonction de son nom
+     * @param nom le nom de la section
+     * @returns {string} l'id de la section
+     */
     getStylesedInvert(nom) {
       switch (nom) {
         case 'INF':
@@ -84,7 +94,10 @@ export default {
         case 'ENT':
           return '8'
       }
-    } ,
+    },
+    /**
+     * Initialise les options
+     */
     initializeOptions() {
       this.sections.forEach((section) => {
         this.options.push(section.nom)
@@ -102,7 +115,7 @@ export default {
       })
     },
     /**
-     * Met a jour les données
+     * Met à jour les données
      */
     update() {
       this.createBadge();
@@ -155,6 +168,7 @@ export default {
   height: 100%;
   width: 100%;
 }
+
 h2 {
   font-size: 4rem;
   margin: 0 0 10% 0;
@@ -231,5 +245,4 @@ Responsive
     width: 100%;
   }
 }
-
 </style>

@@ -1,14 +1,14 @@
 <template>
-  <q-btn icon="manage_accounts" @click="fixed = true" :class="['popup' + this.id, classBtn]"/>
+  <q-btn :class="['popup' + this.id, classBtn]" icon="manage_accounts" @click="fixed = true"/>
   <q-dialog v-model="fixed">
     <q-card  style="width: 500px; max-width: 500px;">
       <q-card-section class="header">
         <div class="text-h6">Modification de {{ prenom }} {{ nom }} </div>
-        <q-btn flat icon="close" title="Fermer" v-close-popup/>
+        <q-btn v-close-popup flat icon="close" title="Fermer" />
       </q-card-section>
       <q-separator/>
-      <q-card-section style="max-height: 50vh;" class="scroll">
-        <q-input outlined v-model="pwd" color="pink-14" label="Nouveau mot de passe" class="input-pwd" :type="isPwd ? 'password' : 'text'">
+      <q-card-section class="scroll" style="max-height: 50vh;">
+        <q-input v-model="pwd" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14" label="Nouveau mot de passe" outlined>
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
           </template>
@@ -18,8 +18,8 @@
       </q-card-section>
       <q-separator/>
       <q-card-actions align="between">
-        <q-btn flat label="Enregistrer" color="pink-14" @click="saveData(); updateStands()" />
-        <q-btn flat-left label="Supprimer" color="red-14" @click="deleteUser()" v-close-popup/>
+        <q-btn color="pink-14" flat label="Enregistrer" @click="saveData(); updateStands()" />
+        <q-btn v-close-popup color="red-14" flat-left label="Supprimer" @click="deleteUser()" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -53,12 +53,12 @@ export default {
     ListOfStand
   },
   computed: {
-    ...mapState('mainStore', ['global_shape']),
+    ...mapState('mainStore', ['global_shape', "listOfManager", "listOfManagerInAPI"]),
     ...mapGetters('mainStore', ['getManager']),
   },
   methods: {
     /**
-     * modifie les stands sélectionnés
+     * Modifie les stands sélectionnés
      */
     updateStands() {
       this.$store.dispatch('mainStore/updateStand', {
@@ -68,16 +68,22 @@ export default {
       this.updateResponsable();
     },
     /**
-     * met a jour les responsable
+     * Met a jour les responsables
      */
     updateResponsable() {
       this.$store.dispatch('mainStore/updateResponsable')
     },
+    /**
+     * Supprime un utilisateur
+     */
     deleteUser() {
       this.$store.dispatch('mainStore/deleteUser', this.id)
     },
+    /**
+     * Sauvegarde les données
+     */
     saveData() {
-      // changement du mdp si il a été modifié
+      // Changement du mdp s'il a été modifié
       if (this.pwd !== '') {
         this.$store.dispatch('mainStore/updatePassword', {
           id: this.id,
@@ -85,14 +91,14 @@ export default {
         })
         this.pwd = '';
       }
-      // changement du nom si il a été modifié
+      // Changement du nom s'il a été modifié
       if (this.nom !== this.user.last_name) {
 
       }
     },
     /**
-     * return le nom de la personne traiter
-     * @returns {string} le nom de la personne
+     * Retourne le nom de la personne traité
+     * @returns {string} la personne
      */
     getUser() {
       let user = "";
@@ -104,7 +110,7 @@ export default {
       return user;
     },
     /**
-     * return l'identifiant de l'utilisateur traiter
+     * Retourne l'identifiant de l'utilisateur traité
      */
     getIdentifiant() {
       this.allManager.forEach((manager, i) => {
@@ -131,13 +137,10 @@ export default {
 </script>
 
 <style scoped>
-.btn-modification {
-  width: 50px;
-}
-
 .header {
   display: flex;
 }
+
 .header button {
   margin-left: auto;
   margin-right: 0;
@@ -150,5 +153,4 @@ export default {
 .input-pwd {
   margin-bottom: 10px;
 }
-
 </style>

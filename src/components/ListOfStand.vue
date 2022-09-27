@@ -1,14 +1,15 @@
 <template>
   <div class=" div-checkbox-container">
-    <span class="element" v-for="stand in allStand">
-      <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.nom color="pink-14" :title=stand.prix
-      @click="shapeChanged"/>
+    <span v-for="stand in allStand" class="element">
+      <q-checkbox v-model="shape" :label=stand.nom :title=stand.prix :val=stand.id-1 color="pink-14" size="sm"
+                  @click="shapeChanged"/>
     </span>
   </div>
 </template>
 
 <script>
 import {mapGetters} from "vuex";
+import {Notify} from "quasar";
 
 export default {
   name: "ListOfStand",
@@ -20,6 +21,7 @@ export default {
   },
   data() {
     return {
+      oldShape: [],
       allManager: [],
       allStand: [],
       shape: [],
@@ -28,7 +30,7 @@ export default {
   },
   methods: {
     /**
-     * return l'identifiant de l'utilisateur traiter
+     * Retourne l'identifiant de l'utilisateur traité
      */
     getIdentifiant() {
       this.allManager.forEach((manager, i) => {
@@ -38,22 +40,35 @@ export default {
       });
     },
     /**
-     * return tous les stands selectionner dans l'api
+     * Retourne tous les stands sélectionnés dans l'api
      * @returns {*[]} liste de tous les stands
      */
     getStandSelected() {
       let standSelected = [];
-      // filtre les badges pour selectionner les bons stands
+      // Filtre les badges pour sélectionner les bons stands
       this.allManager[this.index].responsable.forEach(badge => {
         standSelected.push(badge.id - 1)
       });
       return standSelected;
     },
     /**
-     * modifie les stands sélectionnés
+     * Modifie les stands sélectionnés
      */
     shapeChanged() {
-      this.$store.commit('mainStore/updateShape', this.shape);
+      if (this.shape.length > 0) {
+        this.oldShape = this.shape;
+        this.$store.commit('mainStore/updateShape', this.shape);
+      } else {
+        this.shape = this.oldShape;
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Il doit y avoir au moins 1 badge sélectionné !',
+          progress: true
+        })
+      }
     }
   },
   computed: {
@@ -64,6 +79,7 @@ export default {
     this.getIdentifiant();
     this.allStand = this.getStands
     this.shape = this.getStandSelected();
+    this.oldShape = this.shape;
   }
 }
 </script>

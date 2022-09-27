@@ -1,8 +1,8 @@
 <template>
   <div class="container-for-panel">
-  <div class="panel" v-show="status">
+  <div v-show="status" class="panel">
     <div class="button">
-      <q-btn right flat icon="close" title="Fermer" @click="closeMenu" class="btn-fermer"/>
+      <q-btn class="btn-fermer" flat icon="close" right title="Fermer" @click="closeMenu"/>
     </div>
     <ul>
       <li class="data" @click="this.$router.push('/data')">Tous les utilisateurs</li>
@@ -13,7 +13,7 @@
     </ul>
   </div>
   <div v-show="!status">
-    <q-btn flat icon="menu" title="Menu" @click="openMenu" class="btn-ouvrir"/>
+    <q-btn class="btn-ouvrir" flat icon="menu" title="Menu" @click="openMenu"/>
   </div>
   </div>
 </template>
@@ -34,14 +34,24 @@ export default {
     }
   },
   methods: {
+    /**
+     * Ferme le menu
+     */
     closeMenu() {
       this.status = false;
     },
+    /**
+     * Ouvre le menu
+     */
     openMenu() {
       this.status = true;
     }
   },
   watch: {
+    /**
+     * S'occupe du status du menu
+     * @param value status du menu
+     */
     status(value) {
       if (value) {
         document.querySelector('.container-for-panel').style.width = '340px';
@@ -107,9 +117,6 @@ ul {
   font-size: 2em;
   overflow: hidden;
 }
-.phone {
-  display: none
-}
 
 li {
   margin-bottom: 15px;
@@ -126,7 +133,7 @@ li {
   color: #1D1D1D;
 }
 
-.btn-ouvrir, .phone {
+.btn-ouvrir {
   position: fixed;
 }
 /******************************************
@@ -198,5 +205,4 @@ Responsive
     left: 220px
   }
 }
-
 </style>

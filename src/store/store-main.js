@@ -14,19 +14,24 @@ const state = {
 }
 
 const mutations = {
+  /**
+   * Met à jour la liste des badges
+   * @param state
+   * @param payload
+   */
   updateShape(state, payload) {
     state.global_shape = payload
   },
   /**
-   * Modifi les stands
-   * @param state les variable du store
+   * Modifie les stands
+   * @param state les variables du store
    * @param payload les stands
    */
   changeStand(state, payload) {
     let i = 0;
     let index = 0;
 
-    // trouve l'index de l'occurance avec l'id de l'utilisateur
+    // Trouve l'index de l'occurrence avec l'id de l'utilisateur
     state.listOfManager.forEach((manager) => {
       if (manager.id === payload.index) {
         index = i
@@ -39,16 +44,16 @@ const mutations = {
     })
   },
   /**
-   * met a jour les données de la personne connecter
-   * @param state les variable du store
-   * @param payload les données de la personne connecter
+   * Met à jour les données de la personne connectée
+   * @param state les variables du store
+   * @param payload les données de la personne connectée
    */
   setConnected(state, payload) {
     state.isConnected = payload;
   },
   /**
-   * met a jour si l'utilisateur est admin
-   * @param state les variable du store
+   * Met à jour si l'utilisateur est admin
+   * @param state les variables du store
    * @param payload si l'utilisateur est admin
    */
   setIsAdmin(state, payload) {
@@ -159,7 +164,6 @@ const actions = {
       })
   },
   updateBadges({dispatch, state}, payload) {
-    console.log(payload)
     let config = {
       "headers": {
         "Authorization": "Bearer " + state.connected.access_token,
@@ -262,7 +266,6 @@ const actions = {
         dispatch('getListOfManagerInAPI')
       })
       .catch(error => {
-        console.log(error)
         Notify.create({
           type: 'negative',
           color: 'negative',
@@ -309,7 +312,6 @@ const actions = {
         dispatch('getListOfBadge')
       })
       .catch(error => {
-        console.log(error)
         Notify.create({
           type: 'negative',
           color: 'negative',
@@ -342,7 +344,6 @@ const actions = {
           forgedData += stand.id + ';';
         })
         forgedData = forgedData.substring(0, forgedData.length - 1);
-
         return axios
           .post('/users/' + item.id + '/responsables', {
             badges_id: forgedData
@@ -421,7 +422,6 @@ const actions = {
    * @param payload les stands
    */
   updateStand({state, commit}, payload) {
-    console.log(payload)
     let newStand = []
     let badges = state.listOfBadge;
 
@@ -448,17 +448,17 @@ const actions = {
       .then(response => {
         commit('setIsAdmin', response.data)
         if (state.isAdmin) {
-        commit('setConnected', true)
-        commit('setWhoIsConnected', response.data)
-        this.$router.push('/data')
-        Notify.create({
-          type: 'positive',
-          color: 'positive',
-          timeout: 1000,
-          position: 'top-right',
-          message: 'Bienvenue ' + response.data.user.first_name,
-          progress: true
-        })
+          commit('setConnected', true)
+          commit('setWhoIsConnected', response.data)
+          this.$router.push('/data')
+          Notify.create({
+            type: 'positive',
+            color: 'positive',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Bienvenue ' + response.data.user.first_name,
+            progress: true
+          })
         } else {
           Notify.create({
             type: 'negative',

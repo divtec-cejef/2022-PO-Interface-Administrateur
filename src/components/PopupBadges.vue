@@ -1,22 +1,23 @@
 <template>
-  <q-btn icon="manage_accounts" @click="fixed = true" :class="['popup' + this.id]"/>
+  <q-btn :class="['popup' + this.id]" icon="manage_accounts" @click="fixed = true"/>
   <q-dialog v-model="fixed">
-    <q-card  style="width: 500px; max-width: 500px;">
+    <q-card style="width: 500px; max-width: 500px;">
       <q-card-section class="header">
-        <div class="text-h6">Modification de {{ badge_nom }} </div>
-        <q-btn flat icon="close" title="Fermer" v-close-popup/>
+        <div class="text-h6">Modification de {{ badge_nom }}</div>
+        <q-btn v-close-popup flat icon="close" title="Fermer"/>
       </q-card-section>
       <q-separator/>
-      <q-card-section style="max-height: 50vh;" class="scroll">
-        <q-input outlined v-model="badge_nom" color="pink-14" label="Nouveau nom de badge" class="input-badge-nom" />
-        <q-input outlined v-model="badge_prix" color="pink-14" label="Nouveau prix de badge" class="input-badge-prix" />
-        <q-select  transition-show="jump-up" transition-hide="jump-up" filled v-model="badge_section_id_stylesed" :options=options color="pink-14" label="Nouvelle section" class="input-badge-section" />
-        <q-separator />
+      <q-card-section class="scroll" style="max-height: 50vh;">
+        <q-input v-model="badge_nom" class="input-badge-nom" color="pink-14" label="Nouveau nom de badge" outlined/>
+        <q-input v-model="badge_prix" class="input-badge-prix" color="pink-14" label="Nouveau prix de badge" outlined/>
+        <q-select v-model="badge_section_id_stylesed" :options=options class="input-badge-section" color="pink-14"
+                  filled label="Nouvelle section" transition-hide="jump-up" transition-show="jump-up"/>
+        <q-separator/>
       </q-card-section>
       <q-separator/>
       <q-card-actions align="between">
-        <q-btn flat label="Enregistrer" color="pink-14" @click="saveData()" />
-        <q-btn flat-left label="Supprimer" color="red-14" @click="deleteBadge()" v-close-popup/>
+        <q-btn color="pink-14" flat label="Enregistrer" @click="saveData()"/>
+        <q-btn v-close-popup color="red-14" flat-left label="Supprimer" @click="deleteBadge()"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -56,7 +57,7 @@ export default {
       })
     },
     /**
-     * return l'identifiant de l'utilisateur traiter
+     * Retourne l'identifiant de l'utilisateur traité
      */
     getIdentifiant() {
       this.allBadge.forEach((manager, i) => {
@@ -65,9 +66,15 @@ export default {
         }
       });
     },
+    /**
+     * Supprime un badge
+     */
     deleteBadge() {
       this.$store.dispatch('mainStore/deleteBadge', this.id)
     },
+    /**
+     * Sauvegarde les données
+     */
     saveData() {
       this.badge_section_id = this.getStylesedInvert(this.badge_section_id_stylesed)
       // Changement du badge si quelque chose a été modifié
@@ -80,6 +87,11 @@ export default {
         })
       }
     },
+    /**
+     * Retourne le nom de la section à partir de son id
+     * @param id l'id de la section
+     * @returns {string} le nom de la section
+     */
     getStylesed(id) {
       switch (id) {
         case 1:
@@ -100,7 +112,12 @@ export default {
           return 'ENT'
       }
     },
-   getStylesedInvert(nom) {
+    /**
+     * Retourne l'id de la section à partir de son nom
+     * @param nom le nom de la section
+     * @returns {string} l'id de la section
+     */
+    getStylesedInvert(nom) {
       switch (nom) {
         case 'INF':
           return '1'
@@ -119,7 +136,7 @@ export default {
         case 'ENT':
           return '8'
       }
-   } ,
+    },
   },
   mounted() {
     this.initializeOptions();
@@ -134,13 +151,10 @@ export default {
 </script>
 
 <style scoped>
-.btn-modification {
-  width: 50px;
-}
-
 .header {
   display: flex;
 }
+
 .header button {
   margin-left: auto;
   margin-right: 0;
@@ -153,5 +167,4 @@ export default {
 .input-badge-nom, .input-badge-prix, .input-badge-section {
   margin-bottom: 10px;
 }
-
 </style>
