@@ -338,10 +338,11 @@ const actions = {
       forgedData = '';
 
       if (managerAPI[index].responsable.length !== item.responsable.length) {
-        item.responsable.forEach((stand, index) => {
+        item.responsable.forEach((stand) => {
           forgedData += stand.id + ';';
         })
         forgedData = forgedData.substring(0, forgedData.length - 1);
+
         return axios
           .post('/users/' + item.id + '/responsables', {
             badges_id: forgedData
@@ -420,12 +421,17 @@ const actions = {
    * @param payload les stands
    */
   updateStand({state, commit}, payload) {
+    console.log(payload)
     let newStand = []
     let badges = state.listOfBadge;
 
-    // push les badges pour qu'elle corresponds avec l'api
+    // push les badges pour qu'elle corresponde avec l'api
     payload.stands.forEach(stand => {
-        newStand.push(badges[stand]);
+      badges.forEach(badge => {
+        if (stand + 1 === badge.id) {
+          newStand.push(badge)
+        }
+      })
     })
     commit('changeStand', {index: payload.id, newStands: newStand});
   },
