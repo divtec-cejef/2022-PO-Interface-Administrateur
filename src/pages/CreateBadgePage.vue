@@ -87,7 +87,7 @@ export default {
       })
     },
     /**
-     * Crée un utilisateur
+     * Crée un badge
      */
     createBadge() {
       this.badge_section_id = this.getStylesedInvert(this.badge_section_id_stylesed);

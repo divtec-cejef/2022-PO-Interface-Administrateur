@@ -1,5 +1,5 @@
 <template>
-  <div class="container-menu window-height">
+  <div class="container-menu">
   <NavigationFloat selected='1' />
   <q-btn fab icon="logout" color="pink-14" class="btn-disconnect" @click="logout()" title="Se déconnecter"/>
   <div class="button">
@@ -380,6 +380,14 @@ export default {
 /******************************************
 Responsive
 **************************************** */
+@media screen and (max-width: 620px) {
+  .button {
+    display: none;
+  }
+  .btn-disconnect {
+    display: none;
+  }
+}
 
 @media screen and (max-width: 700px) {
   .phone-name {

@@ -1,12 +1,13 @@
 <template>
-  <div class=" container window-height">
+  <div class=" container window-height" @keyup.enter="connectUser">
     <div class="div-main">
       <div class="div-title">
         <h2>Connexion</h2>
       </div>
       <div class="div-form">
         <q-input outlined v-model="email" color="pink-14" label="Mail" class="input-mail"/>
-        <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd" :type="isPwd ? 'password' : 'text'">
+        <q-input outlined v-model="password" color="pink-14" label="Mot de passe" class="input-pwd"
+                 :type="isPwd ? 'password' : 'text'">
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
           </template>

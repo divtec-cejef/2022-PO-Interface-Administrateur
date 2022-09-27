@@ -10,7 +10,7 @@
       <q-card-section style="max-height: 50vh;" class="scroll">
         <q-input outlined v-model="badge_nom" color="pink-14" label="Nouveau nom de badge" class="input-badge-nom" />
         <q-input outlined v-model="badge_prix" color="pink-14" label="Nouveau prix de badge" class="input-badge-prix" />
-        <q-select outlined v-model="badge_section_id_stylesed" :options=options color="pink-14" label="Nouvelle section" class="input-badge-section" />
+        <q-select  transition-show="jump-up" transition-hide="jump-up" filled v-model="badge_section_id_stylesed" :options=options color="pink-14" label="Nouvelle section" class="input-badge-section" />
         <q-separator />
       </q-card-section>
       <q-separator/>

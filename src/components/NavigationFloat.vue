@@ -1,37 +1,18 @@
 <template>
-  <div class="panel" v-show="statu">
+  <div class="panel" v-show="status">
     <div class="button">
       <q-btn right flat icon="close" title="Fermer" @click="closeMenu" class="btn-fermer"/>
     </div>
     <ul>
       <li class="data" @click="this.$router.push('/data')">Tous les utilisateurs</li>
-      <li class="register-user" @click="this.$router.push('/register')">Crée un utilisateur</li>
+      <li class="register-user" @click="this.$router.push('/register')">Créer un utilisateur</li>
       <q-separator/>
-      <li class="badge" @click="this.$router.push('/badge')">Tous les Badges</li>
-      <li class="register-badge" @click="this.$router.push('/create-badge')">Crée un Badge</li>
+      <li class="badge" @click="this.$router.push('/badge')">Tous les badges</li>
+      <li class="register-badge" @click="this.$router.push('/create-badge')">Créer un badge</li>
     </ul>
   </div>
-  <div v-show="!statu">
-    <q-btn flat icon="menu" title="Menu" @click="openMenu"/>
-  </div>
-  <div class="panel phone" v-show="statu">
-    <div class="button">
-      <q-btn right flat icon="close" title="Fermer" @click="closeMenu"/>
-    </div>
-    <ul>
-      <li class="data" @click="this.$router.push('/data')">
-        <q-btn flat icon="account_box" title="Tous les utilisateurs"/>
-      </li>
-      <li class="register-user" @click="this.$router.push('/register')">
-        <q-btn flat icon="person_add" title="Crée un utilisateur"/>
-      </li>
-      <li class="badge" @click="this.$router.push('/badge')">
-        <q-btn flat icon="badge" title="Tous les Badges"/>
-      </li>
-      <li class="register-badge" @click="this.$router.push('/create-badge')">
-        <q-btn flat icon="add" title="Crée un Badge"/>
-      </li>
-    </ul>
+  <div v-show="!status">
+    <q-btn flat icon="menu" title="Menu" @click="openMenu" class="btn-ouvrir"/>
   </div>
 </template>
 
@@ -41,7 +22,7 @@ export default {
   name: "NavigationFloat",
   data() {
     return {
-      statu: false,
+      status: false,
     }
   },
   props: {
@@ -52,10 +33,10 @@ export default {
   },
   methods: {
     closeMenu() {
-      this.statu = false;
+      this.status = false;
     },
     openMenu() {
-      this.statu = true;
+      this.status = true;
     }
   },
   mounted() {
@@ -81,17 +62,23 @@ export default {
 
 <style scoped>
 .data, .register-badge, .badge, .register-user {
+  font-size: 25px;
+}
+
+.data:hover, .register-badge:hover, .badge:hover, .register-user:hover {
   cursor: pointer;
+  background-color: #e0e0e0;
 }
-.phone {
-  display: none;
-}
-.button {
-  float: right;
+
+.btn-fermer {
+  position: fixed;
+  top: 10px;
+  left: 190px;
+  z-index: 200;
 }
 
 .panel {
-  background-color: #eaeaea;
+  background-color: #f5f5f5;
   box-shadow: #5d5d5d 0 0 5px;
   width: 340px;
 }
@@ -103,6 +90,9 @@ ul {
   padding: 0;
   font-size: 2em;
   overflow: hidden;
+}
+.phone {
+  display: none
 }
 
 li {
@@ -120,25 +110,74 @@ li {
   color: #1D1D1D;
 }
 
+.btn-ouvrir, .phone {
+  position: fixed;
+}
 /******************************************
 Responsive
 **************************************** */
 @media screen and (max-width: 620px) {
-  .panel {
-    display: none;
-  }
-  .phone {
-    display: block;
-    width: 100px;
-  }
   .btn-fermer {
-    align-items: center;
+    right: 5px !important;
+    top: 5px !important;
+    left: auto !important;
+  }
+  .panel {
+    height: 100%;
+    width: 620px;
+    position: fixed;
+    z-index: 100;
+    padding: 10px;
+  }
+  ul {
+    width: 620px !important;
   }
 }
 
 @media screen and (max-width: 1100px) {
   ul {
     width: 200px;
+  }
+}
+
+@media screen and (min-width: 620px) {
+  .btn-fermer {
+    left: 180px;
+  }
+}
+@media screen and (min-width: 900px) {
+  .btn-fermer {
+    left: 200px;
+  }
+}
+@media screen and (min-width: 1110px) {
+  .btn-fermer {
+    left: 215px;
+  }
+}
+@media screen and (min-width: 1300px) {
+  .btn-fermer {
+    left: 225px;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .btn-fermer {
+    left: 235px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .btn-fermer {
+    left: 230px;
+  }
+}
+@media screen and (min-width: 1600px) {
+  .btn-fermer {
+    left: 240px;
+  }
+}
+@media screen and (min-width: 1700px) {
+  .btn-fermer {
+    left: 13%;
   }
 }
 
