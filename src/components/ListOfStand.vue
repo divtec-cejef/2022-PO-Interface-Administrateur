@@ -1,5 +1,5 @@
 <template>
-  <div class="q-gutter-sm div-checkbox-container">
+  <div class=" div-checkbox-container">
     <span class="element" v-for="stand in allStand">
       <q-checkbox size="sm" v-model="shape" :val=stand.id-1 :label=stand.nom color="pink-14" :title=stand.prix
       @click="shapeChanged"/>
@@ -74,19 +74,11 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+  word-break: break-all;
 }
 
 .element {
-  width: 100px;
+  width: 145px;
+  margin-bottom: 10px;
 }
-
-/******************************************
-Responsive
-******************************************/
-
-/*@media screen and (min-width: 600px) {
-  .div-checkbox-container {
-    width: 500px;
-  }
-}*/
 </style>

@@ -83,7 +83,7 @@ export default {
 
 .btn-fermer {
   position: fixed;
-  top: 10px;
+  top: 5px;
   left: 190px;
   z-index: 200;
 }
@@ -190,22 +190,12 @@ Responsive
 }
 @media screen and (min-width: 1400px) {
   .btn-fermer {
-    left: 235px;
+    left: 215px;
   }
 }
 @media screen and (min-width: 1500px) {
   .btn-fermer {
-    left: 230px;
-  }
-}
-@media screen and (min-width: 1600px) {
-  .btn-fermer {
-    left: 240px;
-  }
-}
-@media screen and (min-width: 1700px) {
-  .btn-fermer {
-    left: 13%;
+    left: 220px
   }
 }
 
