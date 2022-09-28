@@ -68,7 +68,7 @@ export default {
       this.updateResponsable();
     },
     /**
-     * Met a jour les responsables
+     * Met à jour les responsables
      */
     updateResponsable() {
       this.$store.dispatch('mainStore/updateResponsable')
