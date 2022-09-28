@@ -60,24 +60,24 @@ const mutations = {
     state.isAdmin = payload['user'].is_admin === 1;
   },
   /**
-   * met a jour la liste des stands
-   * @param state les variable du store
+   * Met à jour la liste des stands
+   * @param state les variables du store
    * @param payload la liste des stands
    */
   setListOfManager(state, payload) {
     state.listOfManager = payload;
   },
   /**
-   * met a jour la liste des manager de l'API
-   * @param state les variable du store
-   * @param payload la liste des manager de l'API
+   * Met à jour la liste des managers de l'API
+   * @param state les variables du store
+   * @param payload la liste des managers de l'API
    */
-  setListOfManagerinAPI(state, payload) {
+  setListOfManagerInAPI(state, payload) {
     state.listOfManagerInAPI = payload;
   },
   /**
-   * met a jour la liste des badges
-   * @param state les variable du store
+   * Met à jour la liste des badges
+   * @param state les variables du store
    * @param payload la liste des badges
    */
   setListOfBadge(state, payload) {
@@ -87,21 +87,31 @@ const mutations = {
     state.sections = payload;
   },
   /**
-   * met a jour l'utilisateur connecter
-   * @param state les variable du store
-   * @param payload l'utilisateur connecter
+   * Met à jour l'utilisateur connecté
+   * @param state les variables du store
+   * @param payload l'utilisateur connecté
    */
   setWhoIsConnected(state, payload) {
     state.connected = payload;
   }
 }
 const actions = {
+  /**
+   * Met à jour les données
+   * @param dispatch les actions
+   */
   updateData({dispatch}) {
-    // met a jour les tables
+    // Met à jour les tables
     dispatch('getListOfManager');
     dispatch('getListOfManagerInAPI');
     dispatch('getListOfBadge');
   },
+  /**
+   * Supprime un badge
+   * @param commit les mutations
+   * @param dispatch les actions
+   * @param payload l'id du badge
+   */
   deleteBadge({commit, dispatch}, payload) {
     let config = {
       "headers": {
@@ -118,7 +128,7 @@ const actions = {
           message: 'Badge supprimé',
           progress: true
         })
-        // met a jour les tables
+        // Met à jour les tables
         dispatch('getListOfBadge');
       })
       .catch(() => {
@@ -132,6 +142,12 @@ const actions = {
         })
       })
   },
+  /**
+   * Supprime un user
+   * @param commit les mutations
+   * @param dispatch les actions
+   * @param payload l'id de l'utilisateur
+   */
   deleteUser({commit, dispatch}, payload) {
     let config = {
       "headers": {
@@ -148,7 +164,7 @@ const actions = {
           message: 'Utilisateur supprimé',
           progress: true
         })
-        // met a jour les tables
+        // Met à jour les tables
         dispatch('getListOfManager');
         dispatch('getListOfManagerInAPI');
       })
@@ -163,6 +179,13 @@ const actions = {
         })
       })
   },
+  /**
+   * Met à jour les badges
+   * @param dispatch les actions
+   * @param state les variables du store
+   * @param payload les badges
+   * @returns {Promise<T>} les badges
+   */
   updateBadges({dispatch, state}, payload) {
     let config = {
       "headers": {
@@ -196,6 +219,12 @@ const actions = {
         })
       })
   },
+  /**
+   * Met à jour le mot de passe
+   * @param commit les mutations
+   * @param payload le mot de passe
+   * @returns {Promise<T>} le mot de passe
+   */
   updatePassword({commit}, payload) {
     let config = {
       "headers": {
@@ -228,7 +257,7 @@ const actions = {
       })
   },
   /**
-   * Crée un utilsiateur
+   * Crée un utilisateur
    * @param dispatch permet de faire des actions
    * @param commit permet de faire des mutations
    * @param payload les données de l'utilisateur
@@ -241,7 +270,7 @@ const actions = {
       }
     }
 
-    // enleve les espace
+    // Enlève les espaces
     payload.firstname = payload.firstname.replaceAll(' ', '');
     payload.lastname = payload.lastname.replaceAll(' ', '');
     payload.email = payload.email.replaceAll(' ', '');
@@ -277,7 +306,7 @@ const actions = {
       })
   },
   /**
-   * Crée un utilsiateur
+   * Crée un utilisateur
    * @param dispatch permet de faire des actions
    * @param commit permet de faire des mutations
    * @param payload les données de l'utilisateur
@@ -290,7 +319,7 @@ const actions = {
       }
     }
 
-    // enleve les espace
+    // Enlève les espaces
     payload.badge_prix = payload.badge_prix.replaceAll(' ', '');
     payload.section_id = payload.section_id.replaceAll(' ', '');
 
@@ -323,8 +352,8 @@ const actions = {
       })
   },
   /**
-   * Met a jour les responsable
-   * @param state les variable du store
+   * Met à jour les responsables
+   * @param state les variables du store
    */
   updateResponsable({state}) {
     let manager = state.listOfManager;
@@ -372,9 +401,9 @@ const actions = {
     });
   },
   /**
-   * Récupère la liste des manager
+   * Récupère la liste des managers
    * @param commit permet de faire des mutations
-   * @returns {Promise<AxiosResponse<any>>} la liste des manager
+   * @returns {Promise<AxiosResponse<any>>} la liste des managers
    */
   getListOfManager({commit}) {
     return axios.get('/users')
@@ -383,14 +412,14 @@ const actions = {
       })
   },
   /**
-   * Récupère la liste des manager de l'API
+   * Récupère la liste des managers de l'API
    * @param commit permet de faire des mutations
-   * @returns {Promise<AxiosResponse<any>>} la liste des manager de l'API
+   * @returns {Promise<AxiosResponse<any>>} la liste des managers de l'API
    */
   getListOfManagerInAPI({commit}) {
     return axios.get('/users')
       .then(response => {
-        commit('setListOfManagerinAPI', response.data);
+        commit('setListOfManagerInAPI', response.data);
       })
   },
   /**
@@ -416,8 +445,8 @@ const actions = {
       })
   },
   /**
-   * Met a jour les stands
-   * @param state les variable du store
+   * Met à jour les stands
+   * @param state les variables du store
    * @param commit permet de faire des mutations
    * @param payload les stands
    */
@@ -425,7 +454,7 @@ const actions = {
     let newStand = []
     let badges = state.listOfBadge;
 
-    // push les badges pour qu'elle corresponde avec l'api
+    // Push les badges pour qu'ils correspondent avec l'api
     payload.stands.forEach(stand => {
       badges.forEach(badge => {
         if (stand + 1 === badge.id) {
@@ -435,16 +464,16 @@ const actions = {
     })
     commit('changeStand', {index: payload.id, newStands: newStand});
   },
-  // connecte un responsable
+  // Connecte un responsable
   login({state, commit}, credentials) {
 
-    //emet une requête axios en passant l'email et le mot de passe
+    // Émet une requête axios en passant l'email et le mot de passe
     return axios
       .post("/login", {
         email: credentials.email,
         password: credentials.password
       })
-      //une fois la requete
+      // Une fois la requete
       .then(response => {
         commit('setIsAdmin', response.data)
         if (state.isAdmin) {
@@ -486,9 +515,9 @@ const actions = {
 }
 const getters = {
   /**
-   * Récupère la liste des manager
+   * Récupère la liste des managers
    * @param state les variable du store
-   * @returns {[]} la liste des manager
+   * @returns {[]} la liste des managers
    */
   getManager: (state) => {
     return state.listOfManager
