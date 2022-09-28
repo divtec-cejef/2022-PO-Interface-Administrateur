@@ -16,8 +16,8 @@
       </q-card-section>
       <q-separator/>
       <q-card-actions align="between">
-        <q-btn color="pink-14" flat label="Enregistrer" @click="saveData()"/>
-        <q-btn v-close-popup color="red-14" flat-left label="Supprimer" @click="deleteBadge()"/>
+        <q-btn v-close-popup color="red-14" flat label="Supprimer" @click="deleteBadge()"/>
+        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer" @click="saveData()"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
