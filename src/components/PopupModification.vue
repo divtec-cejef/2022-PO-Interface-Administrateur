@@ -1,25 +1,26 @@
 <template>
   <q-btn :class="['popup' + this.id, classBtn]" icon="manage_accounts" @click="fixed = true"/>
   <q-dialog v-model="fixed">
-    <q-card  style="width: 500px; max-width: 500px;">
+    <q-card style="width: 500px; max-width: 500px;">
       <q-card-section class="header">
-        <div class="text-h6">Modification de {{ prenom }} {{ nom }} </div>
-        <q-btn v-close-popup flat icon="close" title="Fermer" />
+        <div class="text-h6">Modification de {{ prenom }} {{ nom }}</div>
+        <q-btn v-close-popup flat icon="close" title="Fermer"/>
       </q-card-section>
       <q-separator/>
       <q-card-section class="scroll" style="max-height: 50vh;">
-        <q-input v-model="pwd" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14" label="Nouveau mot de passe" outlined>
+        <q-input v-model="pwd" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14"
+                 label="Nouveau mot de passe" outlined>
           <template v-slot:append>
             <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"/>
           </template>
         </q-input>
-        <q-separator />
+        <q-separator/>
         <ListOfStand :id=this.id />
       </q-card-section>
       <q-separator/>
       <q-card-actions align="between">
-        <q-btn color="pink-14" flat label="Enregistrer" @click="saveData(); updateStands()" />
-        <q-btn v-close-popup color="red-14" flat-left label="Supprimer" @click="deleteUser()" />
+        <q-btn v-close-popup color="red-14" flat label="Supprimer" @click="deleteUser()"/>
+        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer" @click="saveData(); updateStands()"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -27,8 +28,9 @@
 
 <script>
 import {ref} from 'vue'
-import {mapGetters, mapState } from 'vuex'
+import {mapGetters, mapState} from 'vuex'
 import ListOfStand from "components/ListOfStand";
+import {Notify} from "quasar";
 
 export default {
   name: "PopupModification.vue",
@@ -85,15 +87,22 @@ export default {
     saveData() {
       // Changement du mdp s'il a été modifié
       if (this.pwd !== '') {
-        this.$store.dispatch('mainStore/updatePassword', {
-          id: this.id,
-          password: this.pwd
-        })
-        this.pwd = '';
-      }
-      // Changement du nom s'il a été modifié
-      if (this.nom !== this.user.last_name) {
-
+        if (this.pwd.replaceAll(' ', '') === '') {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Le mot de passe ne peut pas être composé d\'espaces',
+            progress: true
+          })
+        } else {
+          this.$store.dispatch('mainStore/updatePassword', {
+            id: this.id,
+            password: this.pwd
+          })
+          this.pwd = '';
+        }
       }
     },
     /**

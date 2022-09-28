@@ -119,13 +119,13 @@ const actions = {
       }
     }
     axios.delete('/badges/' + payload, config)
-      .then(() => {
+      .then((response) => {
         Notify.create({
           type: 'positive',
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Badge supprimé',
+          message: response.data.message,
           progress: true
         })
         // Met à jour les tables
@@ -137,7 +137,7 @@ const actions = {
           color: 'negative',
           timeout: 1000,
           position: 'top-right',
-          message: 'Une erreur s\'est produite lors de la suppression du badge',
+          message: 'Erreur lors de la suppression du badge !',
           progress: true
         })
       })
@@ -155,26 +155,26 @@ const actions = {
       }
     }
     axios.delete('/users/' + payload, config)
-      .then(() => {
+      .then((response) => {
         Notify.create({
           type: 'positive',
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Utilisateur supprimé',
+          message: response.data.message,
           progress: true
         })
         // Met à jour les tables
         dispatch('getListOfManager');
         dispatch('getListOfManagerInAPI');
       })
-      .catch(() => {
+      .catch((error) => {
         Notify.create({
           type: 'negative',
           color: 'negative',
           timeout: 1000,
           position: 'top-right',
-          message: 'Une erreur s\'est produite lors de la suppression de l\'utilisateur',
+          message: error.response.data.error,
           progress: true
         })
       })
@@ -203,7 +203,7 @@ const actions = {
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Badge modifié avec succès',
+          message: response.data.message,
           progress: true
         })
         dispatch('getListOfBadge');
@@ -214,7 +214,7 @@ const actions = {
           color: 'negative',
           timeout: 1000,
           position: 'top-right',
-          message: 'Une erreur s\'est produite lors de la modification du badge',
+          message: error.response.data.error,
           progress: true
         })
       })
@@ -241,17 +241,18 @@ const actions = {
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Mot de passe modifié avec succès',
+          message: response.data.message,
           progress: true
         })
       })
       .catch(error => {
+        console.log(error.response.data)
         Notify.create({
           type: 'negative',
           color: 'negative',
           timeout: 1000,
           position: 'top-right',
-          message: 'Une erreur s\'est produite lors de la modification du mot de passe',
+          message: 'Erreur lors de la modification du mot de passe !',
           progress: true
         })
       })
@@ -288,25 +289,54 @@ const actions = {
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Inscription réussie !',
+          message: response.data.message,
           progress: true
         })
         dispatch('getListOfManager')
         dispatch('getListOfManagerInAPI')
       })
-      .catch(error => {
-        Notify.create({
-          type: 'negative',
-          color: 'negative',
-          timeout: 1000,
-          position: 'top-right',
-          message: 'Erreur lors de l\'inscription !',
-          progress: true
-        })
+      .catch((error) => {
+        if (error.response.data.last_name) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Le nom ne respecte pas les règles de validation !',
+            progress: true
+          })
+        } else if (error.response.data.first_name) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Le prénon ne respecte pas les règles de validation !',
+            progress: true
+          })
+        } else if (error.response.data.email) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'L\'email ne respecte pas les règles de validation !',
+            progress: true
+          })
+        } else {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Un problème est survenu !',
+            progress: true
+          })
+        }
       })
   },
   /**
-   * Crée un utilisateur
+   * Crée un badge
    * @param dispatch permet de faire des actions
    * @param commit permet de faire des mutations
    * @param payload les données de l'utilisateur
@@ -319,9 +349,10 @@ const actions = {
       }
     }
 
-    // Enlève les espaces
-    payload.badge_prix = payload.badge_prix.replaceAll(' ', '');
-    payload.section_id = payload.section_id.replaceAll(' ', '');
+    if (payload.badge_prix.length > 0) {
+      // Enlève les espaces
+      payload.badge_prix = payload.badge_prix.replaceAll(' ', '');
+    }
 
     return axios
       .post('badges', {
@@ -335,20 +366,49 @@ const actions = {
           color: 'positive',
           timeout: 1000,
           position: 'top-right',
-          message: 'Badge créé !',
+          message: response.data.message,
           progress: true
         })
         dispatch('getListOfBadge')
       })
       .catch(error => {
-        Notify.create({
-          type: 'negative',
-          color: 'negative',
-          timeout: 1000,
-          position: 'top-right',
-          message: 'Erreur lors de la création du badge !',
-          progress: true
-        })
+        if (error.response.data.nom) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Le nom du badge ne respecte pas les règles de validation !',
+            progress: true
+          })
+        } else if (error.response.data.prix) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Le prix du badge ne respecte pas les règles de validation !',
+            progress: true
+          })
+        } else if (error.response.data.section_id) {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'La section du badge doit être renseignée !',
+            progress: true
+          })
+        } else {
+          Notify.create({
+            type: 'negative',
+            color: 'negative',
+            timeout: 1000,
+            position: 'top-right',
+            message: 'Un problème est survenu !',
+            progress: true
+          })
+        }
       })
   },
   /**
@@ -383,7 +443,7 @@ const actions = {
               color: 'positive',
               timeout: 1000,
               position: 'top-right',
-              message: 'Base de données mise à jour',
+              message: response.data.message,
               progress: true
             })
           })
@@ -393,7 +453,7 @@ const actions = {
               color: 'negative',
               timeout: 1000,
               position: 'top-right',
-              message: 'Une erreur s\'est produite lors de la mise à jour de la base de données',
+              message: error.response.data.error,
               progress: true
             })
           })
@@ -499,14 +559,14 @@ const actions = {
           })
         }
       })
-      .catch(err => {
-        if (err.response.status === 401) {
+      .catch(error => {
+        if (error.response.status === 401) {
           Notify.create({
             type: 'negative',
             color: 'negative',
             timeout: 1000,
             position: 'top-right',
-            message: 'Email ou mot de passe incorrect',
+            message: error.response.data.error,
             progress: true
           })
         }
