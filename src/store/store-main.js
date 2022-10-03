@@ -8,6 +8,7 @@ const state = {
   listOfManagerInAPI: [],
   listOfManager: [],
   listOfBadge: [],
+  listOfBase: [],
   connected: [],
   global_shape: [],
   sections: [],
@@ -41,6 +42,22 @@ const mutations = {
     state.listOfManager[index].responsable = [];
     payload.newStands.forEach(stand => {
       state.listOfManager[index].responsable.push(stand);
+    })
+  },
+  changeBase(state, payload) {
+    let i = 0;
+    let index = 0;
+
+    // Trouve l'index de l'occurrence avec l'id de l'utilisateur
+    state.listOfManager.forEach((manager) => {
+      if (manager.id === payload.index) {
+        index = i
+      }
+      i++;
+    })
+    state.listOfManager[index].responsable = [];
+    payload.newBases.forEach(base => {
+      state.listOfManager[index].responsable.push(base);
     })
   },
   /**
@@ -83,6 +100,9 @@ const mutations = {
   setListOfBadge(state, payload) {
     state.listOfBadge = payload;
   },
+  setListOfBase(state, payload) {
+    state.listOfBase = payload;
+  },
   setSections(state, payload) {
     state.sections = payload;
   },
@@ -105,6 +125,7 @@ const actions = {
     dispatch('getListOfManager');
     dispatch('getListOfManagerInAPI');
     dispatch('getListOfBadge');
+    dispatch('getListOfBase');
   },
   /**
    * Supprime un badge
@@ -207,6 +228,42 @@ const actions = {
           progress: true
         })
         dispatch('getListOfBadge');
+      })
+      .catch(error => {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: error.response.data.error,
+          progress: true
+        })
+      })
+  },
+  updateBases({dispatch, state}, payload) {
+    let config = {
+      "headers": {
+        "Authorization": "Bearer " + state.connected.access_token,
+      }
+    }
+
+    console.log(payload)
+
+    return axios.put('bases/' + payload.id, {
+      nom: payload.base_nom,
+      credit: payload.base_credit,
+      oxygene: payload.base_oxygene,
+    }, config)
+      .then(response => {
+        Notify.create({
+          type: 'positive',
+          color: 'positive',
+          timeout: 1000,
+          position: 'top-right',
+          message: response.data.message,
+          progress: true
+        })
+        dispatch('getListOfBases');
       })
       .catch(error => {
         Notify.create({
@@ -493,6 +550,12 @@ const actions = {
         commit('setListOfBadge', response.data);
       })
   },
+  getListOfBases({commit}) {
+    return axios.get('/bases')
+      .then(response => {
+        commit('setListOfBase', response.data);
+      })
+  },
   /**
    * Récupère la liste des sections
    * @param commit permet de faire des mutations
@@ -589,6 +652,14 @@ const getters = {
   getStands: (state) => {
     return state.listOfBadge;
   },
+  /**
+   * Récupère la liste des bases
+   * @param state les variables du store
+   * @returns {*} la liste des bases
+   */
+  getBases: (state) => {
+    return state.listOfBase;
+  }
 }
 
 export default {

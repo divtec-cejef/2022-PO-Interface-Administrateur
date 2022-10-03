@@ -8,6 +8,14 @@
       </q-card-section>
       <q-separator/>
       <q-card-section class="scroll" style="max-height: 50vh;">
+        <!-- Liste des bases -->
+        <div class=" div-checkbox-container">
+          <q-input v-model="base_nom" class="input-base-nom" color="pink-14" label="Nom de la base" outlined/>
+          <q-input v-model="base_credit" type="number" class="input-base-credit" color="pink-14" label="Crédits de la base" outlined/>
+          <q-input v-model="base_oxygene" type="number" class="input-base-oxygene" color="pink-14" label="Oxygène" outlined/>
+        </div>
+        <q-separator/>
+        <!-- Mot de passe -->
         <q-input v-model="pwd" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14"
                  label="Nouveau mot de passe" outlined>
           <template v-slot:append>
@@ -15,12 +23,14 @@
           </template>
         </q-input>
         <q-separator/>
+        <!-- Liste des stands -->
         <ListOfStand :id=this.id />
+        <q-separator/>
       </q-card-section>
       <q-separator/>
       <q-card-actions align="between">
         <q-btn v-close-popup color="red-14" flat label="Supprimer" @click="deleteUser()"/>
-        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer" @click="saveData(); updateStands()"/>
+        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer" @click="saveData(); updateStands(); updateBase();"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -43,6 +53,10 @@ export default {
       email: '',
       pwd: '',
       allResponsable: '',
+      base: [],
+      base_nom: '',
+      base_credit: '',
+      base_oxygene: '',
     }
   },
   props: {
@@ -60,6 +74,21 @@ export default {
   },
   methods: {
     /**
+     * Retourne le nom de la personne traité
+     * @returns {string} la personne
+     */
+    getBase() {
+      let base = [];
+      this.allResponsable.forEach(item => {
+        if (item.id === this.id) {
+          if (item.base !== null) {
+            base = item.base;
+          }
+        }
+      });
+      return base;
+    },
+    /**
      * Modifie les stands sélectionnés
      */
     updateStands() {
@@ -68,6 +97,38 @@ export default {
         "stands": this.global_shape,
       })
       this.updateResponsable();
+    },
+    updateBase() {
+      this.base_oxygene = this.base_oxygene < 1 ? 1 : this.base_oxygene
+      if (this.base_oxygene < 1 || this.base_oxygene > 100) {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'L\'oxygène de la base ne peut pas être plus grand que 100',
+          progress: true
+        })
+        this.base_oxygene = this.base.oxygene
+      } else if (this.base_credit < 0) {
+        Notify.create({
+          type: 'negative',
+          color: 'negative',
+          timeout: 1000,
+          position: 'top-right',
+          message: 'Les crédits ne peuvent pas être négatifs',
+          progress: true
+        })
+
+        this.base_credit = this.base.credit;
+    } else {
+        this.$store.dispatch('mainStore/updateBases', {
+          "id": this.id,
+          "base_nom": this.base_nom,
+          "base_credit": this.base_credit,
+          "base_oxygene": this.base_oxygene,
+        })
+      }
     },
     /**
      * Met à jour les responsables
@@ -141,6 +202,10 @@ export default {
     this.prenom = this.user.first_name;
     this.nom = this.user.last_name;
     this.email = this.user.email;
+    this.base = this.getBase();
+    this.base_nom = this.base.nom;
+    this.base_credit = this.base.credit;
+    this.base_oxygene = this.base.oxygene;
   }
 }
 </script>
@@ -159,7 +224,7 @@ export default {
   width: fit-content;
 }
 
-.input-pwd {
+.input-pwd, .input-base-nom, .input-base-credit, .input-base-oxygene {
   margin-bottom: 10px;
 }
 </style>
