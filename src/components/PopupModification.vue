@@ -1,5 +1,5 @@
 <template>
-  <q-btn :class="['popup' + this.id, classBtn]" icon="manage_accounts" @click="fixed = true"/>
+  <q-btn :class="['popup' + this.id]" icon="manage_accounts" @click="fixed = true"/>
   <q-dialog v-model="fixed">
     <q-card style="width: 500px; max-width: 500px;">
       <q-card-section class="header">
@@ -8,13 +8,6 @@
       </q-card-section>
       <q-separator/>
       <q-card-section class="scroll" style="max-height: 50vh;">
-        <!-- Liste des bases -->
-        <div class=" div-checkbox-container">
-          <q-input v-model="base_nom" class="input-base-nom" color="pink-14" label="Nom de la base" outlined/>
-          <q-input v-model="base_credit" type="number" class="input-base-credit" color="pink-14" label="Crédits de la base" outlined/>
-          <q-input v-model="base_oxygene" type="number" class="input-base-oxygene" color="pink-14" label="Oxygène" outlined/>
-        </div>
-        <q-separator/>
         <!-- Mot de passe -->
         <q-input v-model="pwd" :type="isPwd ? 'password' : 'text'" class="input-pwd" color="pink-14"
                  label="Nouveau mot de passe" outlined>
@@ -23,14 +16,39 @@
           </template>
         </q-input>
         <q-separator/>
-        <!-- Liste des stands -->
-        <ListOfStand :id=this.id />
+        <!-- Liste des bases -->
+        <q-expansion-item
+          expand-separator
+          icon="location_city"
+          label="Gestion de la base"
+          v-if="this.base.length > 0">
+          <q-card>
+            <div class=" div-checkbox-container">
+              <q-input v-model="base_nom" class="input-base-nom" color="pink-14" label="Nom de la base" outlined/>
+              <q-input v-model="base_credit" type="number" class="input-base-credit" color="pink-14"
+                       label="Crédits de la base" outlined/>
+              <q-input v-model="base_oxygene" type="number" class="input-base-oxygene" color="pink-14" label="Oxygène"
+                       outlined/>
+            </div>
+          </q-card>
+        </q-expansion-item>
         <q-separator/>
+        <!-- Liste des stands -->
+        <q-expansion-item
+          expand-separator
+          icon="badge"
+          label="Gestion des badges">
+          <q-card>
+            <ListOfStand :id=this.id />
+          </q-card>
+        </q-expansion-item>
       </q-card-section>
       <q-separator/>
+      <!-- Boutons -->
       <q-card-actions align="between">
         <q-btn v-close-popup color="red-14" flat label="Supprimer" @click="deleteUser()"/>
-        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer" @click="saveData(); updateStands(); updateBase();"/>
+        <q-btn v-close-popup color="pink-14" flat-left label="Enregistrer"
+               @click="saveData(); updateStands(); updateBase();"/>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -46,7 +64,6 @@ export default {
   name: "PopupModification.vue",
   data() {
     return {
-      classBtn: 'btn-modification',
       user: '',
       nom: '',
       prenom: '',
@@ -74,7 +91,7 @@ export default {
   },
   methods: {
     /**
-     * Retourne le nom de la personne traité
+     * Retourne la base de la personne traité
      * @returns {string} la personne
      */
     getBase() {
@@ -121,7 +138,7 @@ export default {
         })
 
         this.base_credit = this.base.credit;
-    } else {
+      } else {
         this.$store.dispatch('mainStore/updateBases', {
           "id": this.id,
           "base_nom": this.base_nom,
@@ -226,5 +243,9 @@ export default {
 
 .input-pwd, .input-base-nom, .input-base-credit, .input-base-oxygene {
   margin-bottom: 10px;
+}
+
+.input-base-nom {
+  margin-top: 10px;
 }
 </style>

@@ -1,18 +1,23 @@
 <template>
   <div class="container-menu">
   <NavigationFloat selected='1' />
+    <!-- Bouton "Se déconnecter" -->
   <q-btn class="btn-disconnect" color="pink-14" fab icon="logout" title="Se déconnecter" @click="logout()"/>
   <div class="button">
+    <!-- Bouton "Créer un responsable" -->
     <q-btn class="btn-register" color="pink-14" fab icon="person_add"
            title="Créer un responsable" @click="$router.push('/register')"/>
   </div>
   <div class="button">
-    <q-btn class="btn-badges" color="pink-14" fab icon="post_add"
+    <!-- Bouton "Modifier les badges" -->
+    <q-btn class="btn-badges" color="pink-14" fab icon="badge"
            title="Modifier les badges" @click="$router.push('/badge')"/>
   </div>
   <div class="container">
+    <!-- Écran PC -->
     <div class="data pc">
       <div class="q-pa-md">
+        <!-- Filtre -->
         <div class="div-container-filter">
           <div class="div-filter">
             <q-input v-model="filter" bottom-slots color="pink-14" counter label="Filtre" maxlength="30">
@@ -76,6 +81,7 @@
         </q-list>
       </div>
     </div>
+    <!-- Écran Mobile -->
     <div class="data phone">
       <div class="q-pa-md">
         <div class="div-container-filter">
@@ -228,7 +234,7 @@ export default {
   beforeMount() {
     // Agit sur la touche F5
     window.addEventListener("keydown", event => {
-      if (event.keyCode == 116) {
+     if (event.keyCode === 116) {
         event.preventDefault();
         this.$store.dispatch('mainStore/updateData')
       }
