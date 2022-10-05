@@ -226,7 +226,6 @@ export default {
     this.base = this.getBase();
     this.base_nom = this.base.nom;
     this.base_credit = this.base.credit;
-    console.log(this.base.nom)
     this.baseExist = this.base.nom !== undefined;
   }
 }
