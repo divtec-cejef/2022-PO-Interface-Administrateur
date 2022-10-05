@@ -21,7 +21,7 @@
           expand-separator
           icon="location_city"
           label="Gestion de la base"
-          v-if="this.base.length > 0">
+          v-if="this.baseExist">
           <q-card>
             <div class=" div-checkbox-container">
               <q-input v-model="base_nom" class="input-base-nom" color="pink-14" label="Nom de la base" outlined/>
@@ -74,6 +74,7 @@ export default {
       base_nom: '',
       base_credit: '',
       base_oxygene: '',
+      baseExist: false,
     }
   },
   props: {
@@ -91,8 +92,8 @@ export default {
   },
   methods: {
     /**
-     * Retourne la base de la personne traité
-     * @returns {string} la personne
+     * Retourne la base de la personne traitée
+     * @returns {string} la base
      */
     getBase() {
       let base = [];
@@ -115,6 +116,9 @@ export default {
       })
       this.updateResponsable();
     },
+    /**
+     * Modifie la base de la personne traitée
+     */
     updateBase() {
       this.base_oxygene = this.base_oxygene < 1 ? 1 : this.base_oxygene
       if (this.base_oxygene < 1 || this.base_oxygene > 100) {
@@ -222,7 +226,8 @@ export default {
     this.base = this.getBase();
     this.base_nom = this.base.nom;
     this.base_credit = this.base.credit;
-    this.base_oxygene = this.base.oxygene;
+    console.log(this.base.nom)
+    this.baseExist = this.base.nom !== undefined;
   }
 }
 </script>
